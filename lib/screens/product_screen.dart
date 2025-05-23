@@ -6,7 +6,7 @@ class ProductScreen extends StatelessWidget {
 
   Future<void> _launchDownload() async {
     final url = Uri.parse(
-      'https://drive.google.com/uc?export=download&id=17T_h8cagLQMKX98PVhwBE4WpdXQuYgCC',
+      'https://drive.google.com/file/d/1W6XuseN28ktqLNHgLVSdYod0vk2JsDN0/view?usp=drive_link',
     );
     if (await canLaunchUrl(url)) {
       await launchUrl(url, mode: LaunchMode.externalApplication);
