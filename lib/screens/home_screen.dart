@@ -1,7 +1,36 @@
 import 'package:flutter/material.dart';
+import 'package:youtube_player_iframe/youtube_player_iframe.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
+
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  late YoutubePlayerController _controller;
+
+  @override
+  void initState() {
+    super.initState();
+
+    // Initialize YouTube player controller
+    _controller = YoutubePlayerController(
+      params: const YoutubePlayerParams(
+        showControls: true,
+        mute: false,
+        showFullscreenButton: true,
+        loop: false,
+        enableJavaScript: true, // Required for web
+      ),
+    );
+
+    // Load video after controller is initialized
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _controller.loadVideoById(videoId: 'DWPzoDGxHnE');
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -16,18 +45,83 @@ class HomeScreen extends StatelessWidget {
         child: Center(
           child: ConstrainedBox(
             constraints: const BoxConstraints(maxWidth: 1200),
-            child: Card(
-              elevation: 0,
-              color: Colors.grey[50],
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(16),
-              ),
-              child: Padding(
-                padding: EdgeInsets.all(isDesktop ? 32.0 : 20.0),
-                child: isDesktop ? _buildDesktopLayout() : _buildMobileLayout(),
-              ),
+            child: Column(
+              children: [
+                // Header Card
+                Card(
+                  elevation: 0,
+                  color: Colors.grey[50],
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(16),
+                  ),
+                  child: Padding(
+                    padding: EdgeInsets.all(isDesktop ? 32.0 : 20.0),
+                    child:
+                        isDesktop
+                            ? _buildDesktopLayout()
+                            : _buildMobileLayout(),
+                  ),
+                ),
+
+                const SizedBox(height: 40),
+
+                // YouTube Video Section
+                _buildVideoSection(isDesktop),
+              ],
             ),
           ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildVideoSection(bool isDesktop) {
+    return Card(
+      elevation: 0,
+      color: Colors.grey[50],
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+      child: Padding(
+        padding: EdgeInsets.all(isDesktop ? 32.0 : 20.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              'Cara Kerja Komputer',
+              style: TextStyle(
+                fontSize: isDesktop ? 28 : 22,
+                fontWeight: FontWeight.bold,
+                color: Colors.blue[800],
+              ),
+            ),
+            const SizedBox(height: 16),
+            Container(
+              height: 4,
+              width: 80,
+              color: Colors.blue[800],
+              margin: const EdgeInsets.only(bottom: 20),
+            ),
+
+            // YouTube Player
+            Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(12),
+                color: Colors.grey[200],
+              ),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(12),
+                child: AspectRatio(
+                  aspectRatio: 16 / 9,
+                  child: YoutubePlayerScaffold(
+                    controller: _controller,
+                    aspectRatio: 16 / 9,
+                    builder: (context, player) {
+                      return player;
+                    },
+                  ),
+                ),
+              ),
+            ),
+          ],
         ),
       ),
     );
@@ -64,7 +158,7 @@ class HomeScreen extends StatelessWidget {
           centerText ? CrossAxisAlignment.center : CrossAxisAlignment.start,
       children: [
         Text(
-          'Selamat Datang di Developer Nusantara',
+          'Nusantara',
           textAlign: centerText ? TextAlign.center : TextAlign.left,
           style: TextStyle(
             fontSize: 28,
@@ -121,5 +215,11 @@ class HomeScreen extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    _controller.close();
+    super.dispose();
   }
 }

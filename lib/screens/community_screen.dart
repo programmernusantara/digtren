@@ -30,18 +30,437 @@ class _CommunityScreenState extends State<CommunityScreen> {
         child: Center(
           child: ConstrainedBox(
             constraints: const BoxConstraints(maxWidth: 1200),
-            child: Card(
-              elevation: 0,
-              color: Colors.grey[50],
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(16),
-              ),
-              child: Padding(
-                padding: EdgeInsets.all(isDesktop ? 32.0 : 20.0),
-                child: isDesktop ? _buildDesktopLayout() : _buildMobileLayout(),
-              ),
+            child: Column(
+              children: [
+                // Main Community Card
+                Card(
+                  elevation: 0,
+                  color: Colors.grey[50],
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(16),
+                  ),
+                  child: Padding(
+                    padding: EdgeInsets.all(isDesktop ? 32.0 : 20.0),
+                    child:
+                        isDesktop
+                            ? _buildDesktopLayout()
+                            : _buildMobileLayout(),
+                  ),
+                ),
+
+                const SizedBox(height: 40),
+
+                // Development Team Section (moved from home)
+                _buildDevelopmentTeamSection(isDesktop),
+
+                const SizedBox(height: 40),
+
+                // Support Facilities Section (moved from home)
+                _buildSupportFacilitiesSection(isDesktop),
+              ],
             ),
           ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildDevelopmentTeamSection(bool isDesktop) {
+    return Card(
+      elevation: 0,
+      color: Colors.grey[50],
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+      child: Padding(
+        padding: EdgeInsets.all(isDesktop ? 32.0 : 20.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Icon(
+                  Icons.group,
+                  size: isDesktop ? 32 : 28,
+                  color: Colors.blue[800],
+                ),
+                const SizedBox(width: 12),
+                Text(
+                  'Tim Pengembang',
+                  style: TextStyle(
+                    fontSize: isDesktop ? 24 : 20,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.blue[800],
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 16),
+            Container(
+              height: 2,
+              color: Colors.blue[100],
+              margin: const EdgeInsets.only(bottom: 20),
+            ),
+
+            Text(
+              'Tim profesional yang bertanggung jawab untuk mengembangkan aplikasi:',
+              style: TextStyle(
+                fontSize: isDesktop ? 16 : 14,
+                color: Colors.grey[700],
+                height: 1.5,
+              ),
+            ),
+            const SizedBox(height: 24),
+
+            // Team Grid - 2 cards per row in desktop
+            isDesktop ? _buildDesktopTeamGrid() : _buildMobileTeamList(),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildSupportFacilitiesSection(bool isDesktop) {
+    return Card(
+      elevation: 0,
+      color: Colors.grey[50],
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+      child: Padding(
+        padding: EdgeInsets.all(isDesktop ? 32.0 : 20.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Icon(
+                  Icons.construction,
+                  size: isDesktop ? 32 : 28,
+                  color: Colors.blue[800],
+                ),
+                const SizedBox(width: 12),
+                Text(
+                  'Fasilitas Pendukung',
+                  style: TextStyle(
+                    fontSize: isDesktop ? 24 : 20,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.blue[800],
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 16),
+            Container(
+              height: 2,
+              color: Colors.blue[100],
+              margin: const EdgeInsets.only(bottom: 20),
+            ),
+
+            Text(
+              'Fasilitas dan infrastruktur yang mendukung proses pengembangan:',
+              style: TextStyle(
+                fontSize: isDesktop ? 16 : 14,
+                color: Colors.grey[700],
+                height: 1.5,
+              ),
+            ),
+            const SizedBox(height: 24),
+
+            // Facilities Grid - 2 cards per row in desktop
+            isDesktop
+                ? _buildDesktopFacilitiesGrid()
+                : _buildMobileFacilitiesList(),
+            const SizedBox(height: 16),
+
+            Text(
+              '*Peralatan tambahan dapat disesuaikan dengan kebutuhan proyek',
+              style: TextStyle(
+                fontSize: isDesktop ? 14 : 12,
+                fontStyle: FontStyle.italic,
+                color: Colors.grey[600],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildDesktopTeamGrid() {
+    return GridView.count(
+      shrinkWrap: true,
+      physics: const NeverScrollableScrollPhysics(),
+      crossAxisCount: 2,
+      childAspectRatio: 3,
+      crossAxisSpacing: 20,
+      mainAxisSpacing: 20,
+      children: [
+        _buildTeamRoleCard(
+          'Project Manager',
+          Icons.assignment,
+          'Mengelola proyek dan tim',
+          Colors.blue,
+        ),
+        _buildTeamRoleCard(
+          'UI/UX Designer',
+          Icons.design_services,
+          'Mendesain antarmuka pengguna',
+          Colors.purple,
+        ),
+        _buildTeamRoleCard(
+          'Frontend Developer',
+          Icons.code,
+          'Membangun tampilan aplikasi',
+          Colors.green,
+        ),
+        _buildTeamRoleCard(
+          'Backend Developer',
+          Icons.storage,
+          'Mengembangkan sistem server',
+          Colors.orange,
+        ),
+        _buildTeamRoleCard(
+          'System Engineer',
+          Icons.settings,
+          'Menjaga infrastruktur IT',
+          Colors.red,
+        ),
+        _buildTeamRoleCard(
+          'Admin Operasional',
+          Icons.people,
+          'Mengelola administrasi',
+          Colors.teal,
+        ),
+      ],
+    );
+  }
+
+  Widget _buildMobileTeamList() {
+    return Column(
+      children: [
+        _buildTeamRoleCard(
+          'Project Manager',
+          Icons.assignment,
+          'Mengelola proyek dan tim',
+          Colors.blue,
+        ),
+        const SizedBox(height: 12),
+        _buildTeamRoleCard(
+          'UI/UX Designer',
+          Icons.design_services,
+          'Mendesain antarmuka pengguna',
+          Colors.purple,
+        ),
+        const SizedBox(height: 12),
+        _buildTeamRoleCard(
+          'Frontend Developer',
+          Icons.code,
+          'Membangun tampilan aplikasi',
+          Colors.green,
+        ),
+        const SizedBox(height: 12),
+        _buildTeamRoleCard(
+          'Backend Developer',
+          Icons.storage,
+          'Mengembangkan sistem server',
+          Colors.orange,
+        ),
+        const SizedBox(height: 12),
+        _buildTeamRoleCard(
+          'System Engineer',
+          Icons.settings,
+          'Menjaga infrastruktur IT',
+          Colors.red,
+        ),
+        const SizedBox(height: 12),
+        _buildTeamRoleCard(
+          'Admin Operasional',
+          Icons.people,
+          'Mengelola administrasi',
+          Colors.teal,
+        ),
+      ],
+    );
+  }
+
+  Widget _buildTeamRoleCard(
+    String title,
+    IconData icon,
+    String description,
+    Color color,
+  ) {
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(12),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Row(
+          children: [
+            // Icon Section
+            Container(
+              padding: const EdgeInsets.all(12),
+              decoration: BoxDecoration(
+                color: color.withAlpha(100),
+                borderRadius: BorderRadius.circular(8),
+              ),
+              child: Icon(icon, size: 32, color: color),
+            ),
+            const SizedBox(width: 16),
+
+            // Info Section
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    title,
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.blue[800],
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  Container(width: 40, height: 4, color: color),
+                  const SizedBox(height: 8),
+                  Text(
+                    description,
+                    style: TextStyle(
+                      fontSize: 14,
+                      color: Colors.grey[600],
+                      height: 1.4,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildDesktopFacilitiesGrid() {
+    return GridView.count(
+      shrinkWrap: true,
+      physics: const NeverScrollableScrollPhysics(),
+      crossAxisCount: 2,
+      childAspectRatio: 3,
+      crossAxisSpacing: 20,
+      mainAxisSpacing: 20,
+      children: [
+        _buildFacilityCard(
+          'Gedung dengan Ruang Kerja',
+          'Ruang kerja ergonomis dengan fasilitas lengkap',
+          Icons.business,
+          Colors.blue,
+        ),
+        _buildFacilityCard(
+          'Koneksi Internet Stabil',
+          'Koneksi high-speed dengan backup connection',
+          Icons.wifi,
+          Colors.green,
+        ),
+        _buildFacilityCard(
+          'Server untuk Testing',
+          'Server dedicated untuk pengembangan dan testing',
+          Icons.storage,
+          Colors.orange,
+        ),
+        _buildFacilityCard(
+          'Workstation Profesional',
+          'PC/Laptop dengan spesifikasi tinggi untuk tim',
+          Icons.computer,
+          Colors.purple,
+        ),
+      ],
+    );
+  }
+
+  Widget _buildMobileFacilitiesList() {
+    return Column(
+      children: [
+        _buildFacilityCard(
+          'Gedung dengan Ruang Kerja',
+          'Ruang kerja ergonomis dengan fasilitas lengkap',
+          Icons.business,
+          Colors.blue,
+        ),
+        const SizedBox(height: 12),
+        _buildFacilityCard(
+          'Koneksi Internet Stabil',
+          'Koneksi high-speed dengan backup connection',
+          Icons.wifi,
+          Colors.green,
+        ),
+        const SizedBox(height: 12),
+        _buildFacilityCard(
+          'Server untuk Testing',
+          'Server dedicated untuk pengembangan dan testing',
+          Icons.storage,
+          Colors.orange,
+        ),
+        const SizedBox(height: 12),
+        _buildFacilityCard(
+          'Workstation Profesional',
+          'PC/Laptop dengan spesifikasi tinggi untuk tim',
+          Icons.computer,
+          Colors.purple,
+        ),
+      ],
+    );
+  }
+
+  Widget _buildFacilityCard(
+    String title,
+    String description,
+    IconData icon,
+    Color color,
+  ) {
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(12),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Row(
+          children: [
+            Container(
+              padding: const EdgeInsets.all(12),
+              decoration: BoxDecoration(
+                color: color.withAlpha(100),
+                borderRadius: BorderRadius.circular(8),
+              ),
+              child: Icon(icon, size: 32, color: color),
+            ),
+            const SizedBox(width: 16),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    title,
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.blue[800],
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    description,
+                    style: TextStyle(
+                      fontSize: 14,
+                      color: Colors.grey[600],
+                      height: 1.4,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
         ),
       ),
     );
