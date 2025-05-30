@@ -499,12 +499,18 @@ class _ProductScreenState extends State<ProductScreen> {
         ),
         const SizedBox(height: 12),
         Text(
-          'Bakid App adalah aplikasi manajemen sekolah terintegrasi yang dirancang '
-          'khusus untuk membantu guru dan kepala sekolah (admin) dalam mengelola kegiatan pembelajaran. '
-          'Dengan antarmuka yang intuitif, aplikasi ini mempermudah tugas-tugas harian dan '
-          'meningkatkan efisiensi kerja di lingkungan sekolah.',
+          'Pesantren Miftahul Ulum resmi meluncurkan aplikasi BAKID, sebuah platform digital yang dirancang khusus untuk memudahkan staf pengajar Madrasah Diniyah (Madin) dalam menjalankan tugas harian secara efisien. '
+          'Dari pengelolaan jadwal hingga pencatatan kegiatan, semua bisa dilakukan dalam satu aplikasi yang sederhana namun efektif.\n\n'
+          'Peluncuran ini menjadi langkah awal dari Digtren (Digital Pesantren)—sebuah gerakan transformasi digital untuk mewujudkan pesantren yang lebih modern dan mandiri secara teknologi. '
+          'Peluncuran BAKID hanyalah langkah awal. '
+          'Digtren akan terus dikembangkan menjadi ekosistem digital terpadu yang menyatukan semua lini aktivitas pesantren dalam satu sistem yang cerdas dan terintegrasi.\n\n'
+          'Langkah selanjutnya adalah menghadirkan aplikasi khusus untuk wali santri—agar orang tua bisa memantau langsung aktivitas putra-putrinya di pesantren, mulai dari kehadiran, jadwal kegiatan, laporan keuangan, hingga perkembangan akademik dan pembinaan karakter.\n\n'
+          'Tak hanya itu, Digtren juga akan memperkuat sistem keamanan digital pesantren. '
+          'Nantinya, setiap tamu yang datang akan melalui proses verifikasi digital yang ketat. '
+          'Bahkan, akan diterapkan tes urin berkala bagi santri setelah masa liburan, dan hasilnya langsung terhubung ke sistem agar wali santri dapat mengetahui kondisi anak secara transparan.\n\n'
+          'Dengan Digtren, pesantren tidak hanya adaptif terhadap zaman, tapi juga menjadi ruang yang lebih aman, bersih, dan terpercaya—tanpa meninggalkan jati diri keislaman.',
           style: theme.textTheme.bodyMedium?.copyWith(
-            color: const Color(0xFF424242), // Fixed color
+            color: const Color(0xFF424242),
             height: 1.6,
           ),
         ),
