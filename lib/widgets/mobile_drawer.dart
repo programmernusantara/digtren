@@ -18,7 +18,7 @@ class MobileDrawer extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
               child: Text(
-                'Nusantara',
+                'Digtren',
                 style: TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.w700,

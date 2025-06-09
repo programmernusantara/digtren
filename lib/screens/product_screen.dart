@@ -13,23 +13,16 @@ class ProductScreen extends StatefulWidget {
 class _ProductScreenState extends State<ProductScreen> {
   final PageController _pageController = PageController();
   final List<String> _appScreenshots = [
+    'assets/product/poster.webp',
     'assets/product/1.webp',
     'assets/product/2.webp',
     'assets/product/3.webp',
-    'assets/product/4.webp',
-    'assets/product/5.webp',
-    'assets/product/6.webp',
-    'assets/product/7.webp',
-    'assets/product/8.webp',
-    'assets/product/9.webp',
-    'assets/product/10.webp',
-    'assets/product/11.webp',
     'assets/product/admin.webp',
   ];
 
   Future<void> _launchDownload() async {
     final url = Uri.parse(
-      'https://drive.google.com/file/d/1KQe3Qdd4y61UQAKT2DmgqSHEARxGZBaB/view?usp=sharing',
+      'https://drive.google.com/file/d/1Td4ocgqUJuLc0NyPqZzaT2pL_IRARfui/view?usp=sharing',
     );
     if (await canLaunchUrl(url)) {
       await launchUrl(url, mode: LaunchMode.externalApplication);

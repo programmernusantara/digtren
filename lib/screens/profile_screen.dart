@@ -1,5 +1,3 @@
-// ignore_for_file: prefer_const_constructors
-
 import 'package:flutter/material.dart';
 
 class ProfileScreen extends StatelessWidget {
@@ -9,75 +7,62 @@ class ProfileScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      body: SingleChildScrollView(
-        padding: EdgeInsets.symmetric(horizontal: 20, vertical: 30),
-        child: Center(
-          child: ConstrainedBox(
-            constraints: BoxConstraints(maxWidth: 600),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                // Foto Profil
-                Container(
-                  width: 120,
-                  height: 120,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    border: Border.all(color: Colors.blue, width: 3),
-                    image: DecorationImage(
-                      image: AssetImage('assets/images/4.jpeg'),
-                      fit: BoxFit.cover,
-                    ),
+      body: SafeArea(
+        child: SingleChildScrollView(
+          padding: EdgeInsets.symmetric(horizontal: 20, vertical: 30),
+          child: Center(
+            child: ConstrainedBox(
+              constraints: BoxConstraints(maxWidth: 600),
+              child: Column(
+                children: [
+                  // Foto Profil
+                  CircleAvatar(
+                    radius: 60,
+                    backgroundImage: AssetImage('assets/images/4.webp'),
                   ),
-                ),
-                SizedBox(height: 16),
-                // Nama
-                Text(
-                  'Wildan FQ',
-                  style: TextStyle(
-                    fontSize: 26,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.blue[800],
-                  ),
-                ),
-                SizedBox(height: 6),
-                // Deskripsi Singkat
-                Text(
-                  'Software Engineer | Santri',
-                  style: TextStyle(fontSize: 14, color: Colors.grey[600]),
-                  textAlign: TextAlign.center,
-                ),
-                Text(
-                  '20 Tahun | Muay Thai',
-                  style: TextStyle(fontSize: 13, color: Colors.grey[700]),
-                ),
-                SizedBox(height: 30),
+                  SizedBox(height: 16),
 
-                // Motivasi Hidup
-                Container(
-                  padding: EdgeInsets.symmetric(horizontal: 16, vertical: 20),
-                  decoration: BoxDecoration(
-                    border: Border(
-                      left: BorderSide(color: Colors.blue[800]!, width: 4),
-                    ),
-                  ),
-                  child: Text(
-                    'Saya mulai mengenal komputer saat berusia 12 tahun. Berawal dari sekadar bermain game di warnet, rasa penasaran saya tumbuh: '
-                    'bagaimana sebenarnya game-game ini dibuat?\n\n'
-                    'Dengan keterbatasan alat dan akses internet yang hanya bisa didapat dari warnet ke warnet, saya mulai belajar C++ dan mengenal Unreal Engine. '
-                    'Rasa ingin tahu itu membawa saya lebih jauh—hingga ke dunia pemrograman, pengembangan game, dan bahkan penetrasi keamanan sistem.\n\n'
-                    'Perjalanan ini bukan tentang kemewahan atau fasilitas, tapi tentang kemauan belajar di tengah keterbatasan. '
-                    'Saya percaya, teknologi bukan sekadar alat, tapi pintu menuju perubahan besar dalam hidup saya.',
+                  // Nama
+                  Text(
+                    'Wildan FQ',
                     style: TextStyle(
-                      fontSize: 15,
-                      fontStyle: FontStyle.italic,
-                      color: Colors.grey[800],
-                      height: 1.6,
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black,
                     ),
                   ),
-                ),
-                SizedBox(height: 40),
-              ],
+
+                  SizedBox(height: 6),
+
+                  // Deskripsi Singkat
+                  Text(
+                    'Software Engineer · Santri\n20 Tahun · Muay Thai',
+                    style: TextStyle(
+                      fontSize: 14,
+                      color: Colors.grey[600],
+                      height: 1.4,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+
+                  SizedBox(height: 30),
+
+                  // Motivasi Hidup
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    child: Text(
+                      'Saya mulai mengenal komputer pada usia 12 tahun. Awalnya, saya hanya bermain game di warnet, namun rasa penasaran saya tumbuh: bagaimana game-game ini dibuat?\n\n'
+                      'Dengan keterbatasan alat dan akses internet yang hanya bisa didapatkan dari warnet ke warnet, saya mulai belajar C++ dan mengenal Unreal Engine. '
+                      'Rasa ingin tahu tersebut membawa saya semakin dalam—hingga memasuki dunia pemrograman, pengembangan game, dan penetrasi keamanan sistem.',
+                      style: TextStyle(
+                        fontSize: 15,
+                        color: Colors.grey[800],
+                        height: 1.6,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         ),

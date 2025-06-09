@@ -158,7 +158,7 @@ class _HomeScreenState extends State<HomeScreen> {
           centerText ? CrossAxisAlignment.center : CrossAxisAlignment.start,
       children: [
         Text(
-          'Nusantara',
+          'Digtren',
           textAlign: centerText ? TextAlign.center : TextAlign.left,
           style: TextStyle(
             fontSize: 28,
@@ -176,7 +176,7 @@ class _HomeScreenState extends State<HomeScreen> {
             margin: const EdgeInsets.only(bottom: 20),
           ),
         Text(
-          'Platform kolaboratif bagi para developer di Indonesia untuk terhubung, berdiskusi, dan membangun proyek open-source bersama.',
+          'Platform kolaboratif bagi para developer pesantren di Indonesia untuk saling terhubung, berdiskusi, dan membangun proyek open-source bersama.',
           textAlign: centerText ? TextAlign.center : TextAlign.left,
           style: TextStyle(fontSize: 16, color: Colors.grey[700], height: 1.6),
         ),

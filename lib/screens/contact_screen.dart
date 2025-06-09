@@ -5,14 +5,14 @@ class ContactScreen extends StatelessWidget {
   const ContactScreen({super.key});
 
   Future<void> _launchWhatsApp() async {
-    final url = Uri.parse('https://wa.me/6283809922207');
+    final url = Uri.parse('https://wa.me/6282228760186');
     if (await canLaunchUrl(url)) {
       await launchUrl(url);
     }
   }
 
   Future<void> _launchEmail() async {
-    final url = Uri.parse('mailto:programmernusantara@example.com');
+    final url = Uri.parse('mailto:pronus.programmernusantara@gmail.com');
     if (await canLaunchUrl(url)) {
       await launchUrl(url);
     }
@@ -56,7 +56,7 @@ class ContactScreen extends StatelessWidget {
                     Container(height: 3, width: 60, color: Colors.blue[800]),
                     const SizedBox(height: 24),
                     Text(
-                      'Tim kami siap membantu Anda',
+                      'Tim kami siap membantu Anda. Silakan laporkan bug atau kesalahan jika ditemukan di aplikasi Bakid.',
                       style: TextStyle(fontSize: 16, color: Colors.grey[700]),
                       textAlign: TextAlign.center,
                     ),
@@ -65,8 +65,8 @@ class ContactScreen extends StatelessWidget {
                     // WhatsApp Contact
                     _buildContactButton(
                       icon: Icons.phone,
-                      label: 'WhatsApp Support',
-                      detail: '0838-0992-2207',
+                      label: 'WhatsApp',
+                      detail: '0822-2876-0186',
                       color: Colors.green[600]!,
                       onTap: _launchWhatsApp,
                     ),
@@ -83,7 +83,7 @@ class ContactScreen extends StatelessWidget {
                     const SizedBox(height: 32),
 
                     Text(
-                      'Senin - Jumat • 09.00 - 17.00 WIB',
+                      'Senin - Jumat • 13.00 - 00.00 WIB',
                       style: TextStyle(color: Colors.grey[500], fontSize: 14),
                     ),
                   ],

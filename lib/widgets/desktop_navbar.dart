@@ -18,7 +18,7 @@ class DesktopNavbar extends StatelessWidget {
           GestureDetector(
             onTap: () => onItemSelected(0),
             child: const Text(
-              'Nusantara',
+              'Digtren',
               style: TextStyle(
                 fontSize: 20,
                 fontWeight: FontWeight.bold,
