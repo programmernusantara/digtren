@@ -40,7 +40,7 @@ class _NavigasiState extends State<Navigasi> {
                 elevation: 0,
                 centerTitle: true,
                 title: const Text(
-                  'Nusantara',
+                  'Digtren',
                   style: TextStyle(
                     color: Colors.black87,
                     fontWeight: FontWeight.bold,
