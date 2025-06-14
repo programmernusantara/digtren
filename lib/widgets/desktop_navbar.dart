@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'nav_items.dart';
 
 class DesktopNavbar extends StatelessWidget {
@@ -49,6 +50,22 @@ class DesktopNavbar extends StatelessWidget {
                     icon: Icons.mail_outline,
                     text: 'Contact',
                     onPressed: () => onItemSelected(3),
+                  ),
+                  const SizedBox(width: 32),
+                  NavItem(
+                    icon: Icons.language,
+                    text: 'course',
+                    onPressed: () async {
+                      final Uri url = Uri.parse(
+                        'https://programmernusantara.github.io/sinau-tech/',
+                      );
+                      if (await canLaunchUrl(url)) {
+                        await launchUrl(
+                          url,
+                          mode: LaunchMode.externalApplication,
+                        );
+                      }
+                    },
                   ),
                 ],
               ),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:nusantara/widgets/nav_items.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class MobileDrawer extends StatelessWidget {
   final Function(int) onItemSelected;
@@ -45,6 +46,21 @@ class MobileDrawer extends StatelessWidget {
                     icon: Icons.people_outline,
                     text: 'Community',
                     onTap: () => onItemSelected(2),
+                  ),
+                  NavListTile(
+                    icon: Icons.language,
+                    text: 'course',
+                    onTap: () async {
+                      final Uri url = Uri.parse(
+                        'https://programmernusantara.github.io/sinau-tech/',
+                      );
+                      if (await canLaunchUrl(url)) {
+                        await launchUrl(
+                          url,
+                          mode: LaunchMode.externalApplication,
+                        );
+                      }
+                    },
                   ),
                   NavListTile(
                     icon: Icons.mail_outline,

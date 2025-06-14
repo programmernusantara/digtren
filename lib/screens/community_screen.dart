@@ -565,7 +565,7 @@ class _CommunityScreenState extends State<CommunityScreen> {
             _buildActionButton(
               icon: Icons.code,
               label: 'Repository GitHub',
-              onTap: () => _launchUrl('https://discord.gg/mMcy6ZwS'),
+              onTap: () => _launchUrl('https://github.com/programmernusantara'),
             ),
             _buildActionButton(
               icon: Icons.chat,
