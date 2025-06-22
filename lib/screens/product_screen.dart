@@ -20,6 +20,12 @@ class _ProductScreenState extends State<ProductScreen> {
     'assets/product/admin.webp',
   ];
 
+  // Warna konsisten dengan home screen
+  static const Color primaryColor = Color(0xFF6C63FF);
+  static const Color secondaryColor = Color(0xFFF8F9FA);
+  static const Color textPrimary = Color(0xFF333333);
+  static const Color textSecondary = Color(0xFF666666);
+
   Future<void> _launchDownload() async {
     final url = Uri.parse(
       'https://drive.google.com/file/d/1Td4ocgqUJuLc0NyPqZzaT2pL_IRARfui/view?usp=sharing',
@@ -124,44 +130,51 @@ class _ProductScreenState extends State<ProductScreen> {
   @override
   Widget build(BuildContext context) {
     final isDesktop = MediaQuery.of(context).size.width >= 768;
-    final theme = Theme.of(context);
 
     return Scaffold(
       backgroundColor: Colors.white,
       body: SingleChildScrollView(
         child: Container(
           padding: EdgeInsets.symmetric(
-            horizontal: isDesktop ? 40 : 16,
-            vertical: 20,
+            horizontal: isDesktop ? 40 : 20,
+            vertical: isDesktop ? 30 : 20,
           ),
           child: Center(
             child: ConstrainedBox(
               constraints: const BoxConstraints(maxWidth: 1200),
               child: Column(
                 children: [
-                  // Main App Card - No border, no shadow
+                  // Main Product Card
                   Container(
                     decoration: BoxDecoration(
-                      color: Colors.grey[50],
+                      color: secondaryColor,
                       borderRadius: BorderRadius.circular(12),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withAlpha(8),
+                          blurRadius: 6,
+                          offset: const Offset(0, 2),
+                        ),
+                      ],
                     ),
                     padding: EdgeInsets.all(isDesktop ? 24.0 : 16.0),
                     child:
                         isDesktop
-                            ? _buildDesktopLayout(theme)
-                            : _buildMobileLayout(theme),
+                            ? _buildDesktopLayout()
+                            : _buildMobileLayout(),
                   ),
-                  const SizedBox(height: 24),
+                  const SizedBox(height: 40),
 
-                  // Additional Info Section - No border, no shadow
-                  Container(
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    padding: EdgeInsets.all(isDesktop ? 24.0 : 16.0),
-                    child: _buildAdditionalInfoSection(isDesktop, theme),
-                  ),
+                  // Additional Info Section
+                  _buildSectionTitle("Fitur Unggulan", context),
+                  const SizedBox(height: 24),
+                  _buildFeaturesSection(isDesktop),
+                  const SizedBox(height: 40),
+
+                  // Description Section
+                  _buildSectionTitle("Tentang Produk", context),
+                  const SizedBox(height: 24),
+                  _buildDescriptionSection(),
                 ],
               ),
             ),
@@ -171,23 +184,52 @@ class _ProductScreenState extends State<ProductScreen> {
     );
   }
 
-  Widget _buildDesktopLayout(ThemeData theme) {
+  // Widget untuk judul section yang konsisten dengan home screen
+  Widget _buildSectionTitle(String title, BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 16),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            title,
+            style: TextStyle(
+              fontSize: 28,
+              fontWeight: FontWeight.w600,
+              color: textPrimary,
+              letterSpacing: -0.5,
+            ),
+          ),
+          const SizedBox(height: 8),
+          Container(height: 2, width: 60, color: primaryColor.withAlpha(180)),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildDesktopLayout() {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         // App Icon and Basic Info
         Container(
-          width: 180,
-          padding: const EdgeInsets.only(right: 24),
+          width: 200,
+          padding: const EdgeInsets.only(right: 32),
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Container(
-                width: 120,
-                height: 120,
+                width: 150,
+                height: 150,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(16),
                   color: Colors.white,
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withAlpha(10),
+                      blurRadius: 8,
+                      offset: const Offset(0, 3),
+                    ),
+                  ],
                 ),
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(16),
@@ -199,31 +241,10 @@ class _ProductScreenState extends State<ProductScreen> {
                   ),
                 ),
               ),
-              const SizedBox(height: 20),
-              _buildDownloadButton(theme),
-              const SizedBox(height: 12),
-              Text(
-                'Versi 1.0.0 • 25MB',
-                style: theme.textTheme.bodySmall?.copyWith(
-                  color: const Color(0xFF757575), // Fixed color
-                ),
-              ),
-              const SizedBox(height: 4),
-              Text(
-                'Android 10+',
-                style: theme.textTheme.bodySmall?.copyWith(
-                  color: const Color(0xFF757575), // Fixed color
-                ),
-              ),
+              const SizedBox(height: 24),
+              _buildDownloadButton(),
               const SizedBox(height: 16),
-              const Divider(
-                color: Color(0xFFE0E0E0), // Fixed color
-                height: 1,
-              ),
-              const SizedBox(height: 16),
-              _buildInfoBadge(Icons.people, '1.000+', 'Unduhan', theme),
-              const SizedBox(height: 8),
-              _buildInfoBadge(Icons.star, '4.8', 'Rating', theme),
+              _buildInfoBadges(),
             ],
           ),
         ),
@@ -235,26 +256,27 @@ class _ProductScreenState extends State<ProductScreen> {
             children: [
               Text(
                 'Bakid App',
-                style: theme.textTheme.headlineSmall?.copyWith(
-                  color: Colors.black87,
-                  fontWeight: FontWeight.bold,
+                style: TextStyle(
+                  fontSize: 32,
+                  fontWeight: FontWeight.w700,
+                  color: textPrimary,
+                  height: 1.2,
                 ),
               ),
-              const SizedBox(height: 4),
+              const SizedBox(height: 8),
               Text(
                 'Aplikasi manajemen sekolah',
-                style: theme.textTheme.titleMedium?.copyWith(
-                  color: const Color(0xFF616161), // Fixed color
+                style: TextStyle(
+                  fontSize: 18,
+                  color: textSecondary,
+                  height: 1.4,
                 ),
               ),
-              const SizedBox(height: 16),
+              const SizedBox(height: 24),
 
               // Screenshots Slider
               _buildScreenshotsSlider(false),
-              const SizedBox(height: 24),
-
-              // Description
-              _buildDescriptionSection(theme),
+              const SizedBox(height: 32),
             ],
           ),
         ),
@@ -262,17 +284,24 @@ class _ProductScreenState extends State<ProductScreen> {
     );
   }
 
-  Widget _buildMobileLayout(ThemeData theme) {
+  Widget _buildMobileLayout() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        // App Icon and Title
+        // App Icon
         Container(
-          width: 100,
-          height: 100,
+          width: 120,
+          height: 120,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(16),
             color: Colors.white,
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withAlpha(10),
+                blurRadius: 8,
+                offset: const Offset(0, 3),
+              ),
+            ],
           ),
           child: ClipRRect(
             borderRadius: BorderRadius.circular(16),
@@ -283,32 +312,26 @@ class _ProductScreenState extends State<ProductScreen> {
             ),
           ),
         ),
-        const SizedBox(height: 16),
+        const SizedBox(height: 20),
+
+        // Title
         Text(
           'Bakid App',
-          style: theme.textTheme.titleLarge?.copyWith(
-            fontWeight: FontWeight.bold,
-            color: Colors.black87,
+          style: TextStyle(
+            fontSize: 28,
+            fontWeight: FontWeight.w700,
+            color: textPrimary,
           ),
         ),
         const SizedBox(height: 4),
         Text(
           'Aplikasi manajemen sekolah',
-          style: theme.textTheme.bodyMedium?.copyWith(
-            color: const Color(0xFF616161), // Fixed color
-          ),
+          style: TextStyle(fontSize: 16, color: textSecondary),
         ),
-        const SizedBox(height: 16),
+        const SizedBox(height: 20),
 
-        // Rating and Downloads
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            _buildInfoBadge(Icons.star, '4.8', 'Rating', theme),
-            const SizedBox(width: 16),
-            _buildInfoBadge(Icons.people, '1.000+', 'Unduhan', theme),
-          ],
-        ),
+        // Info Badges
+        _buildInfoBadges(),
         const SizedBox(height: 20),
 
         // Screenshots Slider
@@ -316,25 +339,7 @@ class _ProductScreenState extends State<ProductScreen> {
         const SizedBox(height: 24),
 
         // Download Button
-        _buildDownloadButton(theme),
-        const SizedBox(height: 12),
-        Text(
-          'Versi 1.0.0 • 25MB',
-          style: theme.textTheme.bodySmall?.copyWith(
-            color: const Color(0xFF757575), // Fixed color
-          ),
-        ),
-        const SizedBox(height: 4),
-        Text(
-          'Android 10+',
-          style: theme.textTheme.bodySmall?.copyWith(
-            color: const Color(0xFF757575), // Fixed color
-          ),
-        ),
-        const SizedBox(height: 24),
-
-        // Description
-        _buildDescriptionSection(theme),
+        _buildDownloadButton(),
       ],
     );
   }
@@ -343,387 +348,262 @@ class _ProductScreenState extends State<ProductScreen> {
     return Column(
       children: [
         SizedBox(
-          height: isMobile ? 180 : 280,
-          child: Stack(
-            children: [
-              PageView.builder(
-                controller: _pageController,
-                itemCount: _appScreenshots.length,
-                itemBuilder: (context, index) {
-                  return GestureDetector(
-                    onTap: () => _showFullScreenImage(context, index),
-                    child: Padding(
-                      padding: EdgeInsets.symmetric(
-                        horizontal: isMobile ? 8.0 : 12.0,
+          height: isMobile ? 200 : 300,
+          child: PageView.builder(
+            controller: _pageController,
+            itemCount: _appScreenshots.length,
+            itemBuilder: (context, index) {
+              return GestureDetector(
+                onTap: () => _showFullScreenImage(context, index),
+                child: Padding(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: isMobile ? 8.0 : 16.0,
+                  ),
+                  child: Hero(
+                    tag: 'image_$index',
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(8),
+                      child: Image.asset(
+                        _appScreenshots[index],
+                        fit: BoxFit.cover,
+                        errorBuilder:
+                            (context, error, stackTrace) => _buildImageError(),
                       ),
-                      child: Hero(
-                        tag: 'image_$index',
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(8),
-                          child: Container(
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(8),
-                            ),
-                            child: Image.asset(
-                              _appScreenshots[index],
-                              fit: BoxFit.contain,
-                              errorBuilder:
-                                  (context, error, stackTrace) => Container(
-                                    color: const Color(
-                                      0xFFF5F5F5,
-                                    ), // Fixed color
-                                    child: Center(
-                                      child: Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: [
-                                          Icon(
-                                            Icons.image,
-                                            size: 40,
-                                            color: const Color(
-                                              0xFF9E9E9E,
-                                            ), // Fixed color
-                                          ),
-                                          const SizedBox(height: 8),
-                                          Text(
-                                            'Screenshot ${index + 1}',
-                                            style: TextStyle(
-                                              color: const Color(
-                                                0xFF757575,
-                                              ), // Fixed color
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                  );
-                },
-              ),
-              if (_appScreenshots.length > 1)
-                Positioned(
-                  left: 0,
-                  top: 0,
-                  bottom: 0,
-                  child: Center(
-                    child: IconButton(
-                      icon: Container(
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: Colors.black.withAlpha(100),
-                        ),
-                        child: const Icon(
-                          Icons.chevron_left,
-                          color: Colors.white,
-                          size: 30,
-                        ),
-                      ),
-                      onPressed: () {
-                        _pageController.previousPage(
-                          duration: const Duration(milliseconds: 300),
-                          curve: Curves.easeInOut,
-                        );
-                      },
                     ),
                   ),
                 ),
-              if (_appScreenshots.length > 1)
-                Positioned(
-                  right: 0,
-                  top: 0,
-                  bottom: 0,
-                  child: Center(
-                    child: IconButton(
-                      icon: Container(
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: Colors.black.withAlpha(100),
-                        ),
-                        child: const Icon(
-                          Icons.chevron_right,
-                          color: Colors.white,
-                          size: 30,
-                        ),
-                      ),
-                      onPressed: () {
-                        _pageController.nextPage(
-                          duration: const Duration(milliseconds: 300),
-                          curve: Curves.easeInOut,
-                        );
-                      },
-                    ),
-                  ),
-                ),
-            ],
+              );
+            },
           ),
         ),
-        const SizedBox(height: 12),
+        const SizedBox(height: 16),
         if (_appScreenshots.length > 1)
           SmoothPageIndicator(
             controller: _pageController,
             count: _appScreenshots.length,
-            effect: const WormEffect(
+            effect: WormEffect(
               dotHeight: 8,
               dotWidth: 8,
-              activeDotColor: Colors.blueAccent,
-              dotColor: Color(0xFFE0E0E0), // Fixed color
-              spacing: 4,
+              activeDotColor: primaryColor,
+              dotColor: Colors.grey[300]!,
+              spacing: 6,
             ),
           ),
       ],
     );
   }
 
-  Widget _buildDescriptionSection(ThemeData theme) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          'Tentang Aplikasi',
-          style: theme.textTheme.titleMedium?.copyWith(
-            fontWeight: FontWeight.bold,
-            color: Colors.black87,
-          ),
-        ),
-        const SizedBox(height: 12),
-        Text(
-          'Pesantren Miftahul Ulum resmi meluncurkan aplikasi BAKID, sebuah platform digital yang dirancang khusus untuk memudahkan staf pengajar Madrasah Diniyah (Madin) dalam menjalankan tugas harian secara efisien. '
-          'Dari pengelolaan jadwal hingga pencatatan kegiatan, semua bisa dilakukan dalam satu aplikasi yang sederhana namun efektif.\n\n'
-          'Peluncuran ini menjadi langkah awal dari Digtren (Digital Pesantren)—sebuah gerakan transformasi digital untuk mewujudkan pesantren yang lebih modern dan mandiri secara teknologi. '
-          'Peluncuran BAKID hanyalah langkah awal. '
-          'Digtren akan terus dikembangkan menjadi ekosistem digital terpadu yang menyatukan semua lini aktivitas pesantren dalam satu sistem yang cerdas dan terintegrasi.\n\n'
-          'Langkah selanjutnya adalah menghadirkan aplikasi khusus untuk wali santri—agar orang tua bisa memantau langsung aktivitas putra-putrinya di pesantren, mulai dari kehadiran, jadwal kegiatan, laporan keuangan, hingga perkembangan akademik dan pembinaan karakter.\n\n'
-          'Tak hanya itu, Digtren juga akan memperkuat sistem keamanan digital pesantren. '
-          'Nantinya, setiap tamu yang datang akan melalui proses verifikasi digital yang ketat. '
-          'Bahkan, akan diterapkan tes urin berkala bagi santri setelah masa liburan, dan hasilnya langsung terhubung ke sistem agar wali santri dapat mengetahui kondisi anak secara transparan.\n\n'
-          'Dengan Digtren, pesantren tidak hanya adaptif terhadap zaman, tapi juga menjadi ruang yang lebih aman, bersih, dan terpercaya—tanpa meninggalkan jati diri keislaman.',
-          style: theme.textTheme.bodyMedium?.copyWith(
-            color: const Color(0xFF424242),
-            height: 1.6,
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildDownloadButton(ThemeData theme) {
+  Widget _buildDownloadButton() {
     return SizedBox(
       width: double.infinity,
       child: ElevatedButton(
         onPressed: _launchDownload,
         style: ElevatedButton.styleFrom(
-          backgroundColor: Colors.blueAccent,
+          backgroundColor: primaryColor,
           foregroundColor: Colors.white,
           padding: const EdgeInsets.symmetric(vertical: 14),
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
           elevation: 0,
         ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            const Icon(Icons.download, size: 20),
-            const SizedBox(width: 8),
-            Text(
-              'UNDUH',
-              style: theme.textTheme.bodyMedium?.copyWith(
-                fontWeight: FontWeight.bold,
-                letterSpacing: 0.5,
-              ),
-            ),
-          ],
+        child: const Text(
+          'UNDUH APLIKASI',
+          style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
         ),
       ),
     );
   }
 
-  Widget _buildAdditionalInfoSection(bool isDesktop, ThemeData theme) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
+  Widget _buildInfoBadges() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Text(
-          'Fitur Unggulan',
-          style: theme.textTheme.titleMedium?.copyWith(
-            fontWeight: FontWeight.bold,
-            color: Colors.black87,
-          ),
-        ),
-        const SizedBox(height: 16),
-        isDesktop
-            ? _buildDesktopFeaturesGrid(theme)
-            : _buildMobileFeaturesList(theme),
-        const SizedBox(height: 24),
-        const Divider(color: Color(0xFFE0E0E0)), // Fixed color
-        const SizedBox(height: 24),
-        Text(
-          'Informasi Tambahan',
-          style: theme.textTheme.titleMedium?.copyWith(
-            fontWeight: FontWeight.bold,
-            color: Colors.black87,
-          ),
-        ),
-        const SizedBox(height: 16),
-        _buildInfoTable(theme),
+        _buildInfoBadge(Icons.download, '1.000+', 'Unduhan'),
+        const SizedBox(width: 20),
+        _buildInfoBadge(Icons.star, '4.8', 'Rating'),
+        const SizedBox(width: 20),
+        _buildInfoBadge(Icons.phone_android, '10+', 'Android'),
       ],
     );
   }
 
-  Widget _buildDesktopFeaturesGrid(ThemeData theme) {
-    return GridView.count(
-      shrinkWrap: true,
-      physics: const NeverScrollableScrollPhysics(),
-      crossAxisCount: 2,
-      childAspectRatio: 5,
-      crossAxisSpacing: 20,
-      mainAxisSpacing: 12,
-      children: [
-        _buildFeatureItem(theme, 'Manajemen Kelas', Icons.class_),
-        _buildFeatureItem(theme, 'Presensi Digital', Icons.fingerprint),
-        _buildFeatureItem(theme, 'Jurnal guru', Icons.assessment),
-        _buildFeatureItem(
-          theme,
-          'Perencanaan Pembelajaran',
-          Icons.calendar_today,
-        ),
-        _buildFeatureItem(theme, 'Laporan Otomatis', Icons.description),
-      ],
-    );
-  }
-
-  Widget _buildMobileFeaturesList(ThemeData theme) {
+  Widget _buildInfoBadge(IconData icon, String value, String label) {
     return Column(
       children: [
-        _buildFeatureItem(theme, 'Manajemen Kelas', Icons.class_),
-        const SizedBox(height: 12),
-        _buildFeatureItem(theme, 'Presensi Digital', Icons.fingerprint),
-        const SizedBox(height: 12),
-        _buildFeatureItem(theme, 'Penilaian Otomatis', Icons.assessment),
-        const SizedBox(height: 12),
-        _buildFeatureItem(theme, 'Jurnal Harian', Icons.chat),
-        const SizedBox(height: 12),
-        _buildFeatureItem(
-          theme,
-          'Perencanaan Pembelajaran',
-          Icons.calendar_today,
+        Icon(icon, size: 24, color: primaryColor),
+        const SizedBox(height: 4),
+        Text(
+          value,
+          style: TextStyle(
+            fontSize: 16,
+            fontWeight: FontWeight.w600,
+            color: textPrimary,
+          ),
         ),
-        const SizedBox(height: 12),
-        _buildFeatureItem(theme, 'Laporan Otomatis', Icons.description),
+        Text(label, style: TextStyle(fontSize: 12, color: textSecondary)),
       ],
     );
   }
 
-  Widget _buildFeatureItem(ThemeData theme, String title, IconData icon) {
+  Widget _buildFeaturesSection(bool isDesktop) {
+    final features = [
+      {
+        'icon': Icons.class_,
+        'title': 'Manajemen Kelas',
+        'desc': 'Kelola kelas dan siswa dengan mudah',
+      },
+      {
+        'icon': Icons.fingerprint,
+        'title': 'Presensi Digital',
+        'desc': 'Sistem presensi modern dengan verifikasi',
+      },
+      {
+        'icon': Icons.assessment,
+        'title': 'Penilaian Otomatis',
+        'desc': 'Hitung nilai secara otomatis',
+      },
+      {
+        'icon': Icons.calendar_today,
+        'title': 'Perencanaan',
+        'desc': 'Atur jadwal pembelajaran',
+      },
+      {
+        'icon': Icons.description,
+        'title': 'Laporan',
+        'desc': 'Generate laporan otomatis',
+      },
+      {
+        'icon': Icons.notifications,
+        'title': 'Notifikasi',
+        'desc': 'Pengingat untuk guru dan siswa',
+      },
+    ];
+
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(12),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withAlpha(8),
+            blurRadius: 6,
+            offset: const Offset(0, 2),
+          ),
+        ],
+      ),
+      padding: const EdgeInsets.all(24),
+      child:
+          isDesktop
+              ? GridView.builder(
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 3,
+                  crossAxisSpacing: 24,
+                  mainAxisSpacing: 24,
+                  childAspectRatio: 3,
+                ),
+                itemCount: features.length,
+                itemBuilder:
+                    (context, index) => _buildFeatureItem(features[index]),
+              )
+              : Column(
+                children:
+                    features
+                        .map(
+                          (feature) => Padding(
+                            padding: const EdgeInsets.only(bottom: 16),
+                            child: _buildFeatureItem(feature),
+                          ),
+                        )
+                        .toList(),
+              ),
+    );
+  }
+
+  Widget _buildFeatureItem(Map<String, dynamic> feature) {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Icon(icon, size: 20, color: Colors.blueAccent),
-        const SizedBox(width: 12),
+        Container(
+          padding: const EdgeInsets.all(8),
+          decoration: BoxDecoration(
+            color: primaryColor.withAlpha(50),
+            borderRadius: BorderRadius.circular(8),
+          ),
+          child: Icon(feature['icon'], size: 24, color: primaryColor),
+        ),
+        const SizedBox(width: 16),
         Expanded(
-          child: Text(
-            title,
-            style: theme.textTheme.bodyMedium?.copyWith(
-              color: const Color(0xFF424242), // Fixed color
-              height: 1.4,
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildInfoTable(ThemeData theme) {
-    return Table(
-      columnWidths: const {0: FlexColumnWidth(1.5), 1: FlexColumnWidth(3)},
-      children: [
-        _buildInfoRow(theme, 'Dibuat', '01 Juni 2025'),
-        _buildInfoRow(theme, 'Pengembang', 'Tim Pengembang Digtren'),
-        _buildInfoRow(theme, 'Ukuran', '25MB'),
-        _buildInfoRow(theme, 'Kompabilitas', 'Android 10 ke atas'),
-        _buildInfoRow(theme, 'Kategori', 'Pendidikan'),
-      ],
-    );
-  }
-
-  TableRow _buildInfoRow(ThemeData theme, String label, String value) {
-    return TableRow(
-      children: [
-        Padding(
-          padding: const EdgeInsets.symmetric(vertical: 8),
-          child: Text(
-            label,
-            style: theme.textTheme.bodyMedium?.copyWith(
-              color: const Color(0xFF757575), // Fixed color
-              fontWeight: FontWeight.w500,
-            ),
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.symmetric(vertical: 8),
-          child: Text(
-            value,
-            style: theme.textTheme.bodyMedium?.copyWith(
-              color: const Color(0xFF424242), // Fixed color
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildInfoBadge(
-    IconData icon,
-    String value,
-    String label,
-    ThemeData theme,
-  ) {
-    return Column(
-      children: [
-        Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Icon(icon, size: 16, color: const Color(0xFF757575)), // Fixed color
-            const SizedBox(width: 4),
-            Text(
-              value,
-              style: theme.textTheme.bodyMedium?.copyWith(
-                fontWeight: FontWeight.bold,
-                color: const Color(0xFF424242), // Fixed color
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                feature['title'],
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w600,
+                  color: textPrimary,
+                ),
               ),
-            ),
-          ],
-        ),
-        const SizedBox(height: 2),
-        Text(
-          label,
-          style: theme.textTheme.bodySmall?.copyWith(
-            color: const Color(0xFF757575), // Fixed color
+              const SizedBox(height: 4),
+              Text(
+                feature['desc'],
+                style: TextStyle(
+                  fontSize: 14,
+                  color: textSecondary,
+                  height: 1.4,
+                ),
+              ),
+            ],
           ),
         ),
       ],
+    );
+  }
+
+  Widget _buildDescriptionSection() {
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(12),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withAlpha(8),
+            blurRadius: 6,
+            offset: const Offset(0, 2),
+          ),
+        ],
+      ),
+      padding: const EdgeInsets.all(24),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            'Pesantren Miftahul Ulum resmi meluncurkan aplikasi BAKID, sebuah platform digital yang dirancang khusus untuk memudahkan staf pengajar Madrasah Diniyah (Madin) dalam menjalankan tugas harian secara efisien. '
+            'Dari pengelolaan jadwal hingga pencatatan kegiatan, semua bisa dilakukan dalam satu aplikasi yang sederhana namun efektif.\n\n'
+            'Peluncuran ini menjadi langkah awal dari Digtren (Digital Pesantren)—sebuah gerakan transformasi digital untuk mewujudkan pesantren yang lebih modern dan mandiri secara teknologi. '
+            'Peluncuran BAKID hanyalah langkah awal. '
+            'Digtren akan terus dikembangkan menjadi ekosistem digital terpadu yang menyatukan semua lini aktivitas pesantren dalam satu sistem yang cerdas dan terintegrasi.\n\n'
+            'Langkah selanjutnya adalah menghadirkan aplikasi khusus untuk wali santri—agar orang tua bisa memantau langsung aktivitas putra-putrinya di pesantren, mulai dari kehadiran, jadwal kegiatan, laporan keuangan, hingga perkembangan akademik dan pembinaan karakter.',
+            style: TextStyle(fontSize: 15, color: textSecondary, height: 1.6),
+          ),
+        ],
+      ),
     );
   }
 
   Widget _buildImageError() {
     return Container(
-      color: const Color(0xFFF5F5F5), // Fixed color
+      color: secondaryColor,
       child: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(
-              Icons.image,
-              size: 40,
-              color: const Color(0xFF9E9E9E),
-            ), // Fixed color
+            Icon(Icons.image, size: 40, color: Colors.grey[400]),
             const SizedBox(height: 8),
             Text(
               'Gambar Tidak Tersedia',
-              style: TextStyle(color: const Color(0xFF757575)), // Fixed color
+              style: TextStyle(color: Colors.grey[500]),
             ),
           ],
         ),

@@ -23,7 +23,7 @@ class _NavigasiState extends State<Navigasi> {
     const ProductScreen(),
     const CommunityScreen(),
     const ContactScreen(),
-    const ProfileScreen(),
+    const TeamProfileScreen(),
   ];
 
   @override

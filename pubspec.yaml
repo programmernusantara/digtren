@@ -72,9 +72,7 @@ flutter:
      - assets/images/3.jpeg
      - assets/images/4.webp
      - assets/images/header_image.jpeg
-     - assets/images/graphic_design.jpeg
-     - assets/images/animation.jpeg
-     - assets/images/web_dev.jpeg
+   
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images

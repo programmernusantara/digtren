@@ -11,6 +11,12 @@ class CommunityScreen extends StatefulWidget {
 class _CommunityScreenState extends State<CommunityScreen> {
   bool _showTech = false;
 
+  // Warna konsisten dengan home dan product screen
+  static const Color primaryColor = Color(0xFF6C63FF);
+  static const Color secondaryColor = Color(0xFFF8F9FA);
+  static const Color textPrimary = Color(0xFF333333);
+  static const Color textSecondary = Color(0xFF666666);
+
   Future<void> _launchUrl(String url) async {
     if (await canLaunchUrl(Uri.parse(url))) {
       await launchUrl(Uri.parse(url), mode: LaunchMode.externalApplication);
@@ -21,43 +27,49 @@ class _CommunityScreenState extends State<CommunityScreen> {
   Widget build(BuildContext context) {
     final isDesktop = MediaQuery.of(context).size.width >= 768;
 
-    return SingleChildScrollView(
-      child: Container(
-        padding: EdgeInsets.symmetric(
-          horizontal: isDesktop ? 40 : 20,
-          vertical: isDesktop ? 30 : 20,
-        ),
-        child: Center(
-          child: ConstrainedBox(
-            constraints: const BoxConstraints(maxWidth: 1200),
-            child: Column(
-              children: [
-                // Main Community Card
-                Card(
-                  elevation: 0,
-                  color: Colors.grey[50],
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(16),
-                  ),
-                  child: Padding(
-                    padding: EdgeInsets.all(isDesktop ? 32.0 : 20.0),
+    return Scaffold(
+      backgroundColor: Colors.white,
+      body: SingleChildScrollView(
+        child: Container(
+          padding: EdgeInsets.symmetric(
+            horizontal: isDesktop ? 40 : 20,
+            vertical: isDesktop ? 30 : 20,
+          ),
+          child: Center(
+            child: ConstrainedBox(
+              constraints: const BoxConstraints(maxWidth: 1200),
+              child: Column(
+                children: [
+                  // Main Community Card
+                  Container(
+                    decoration: BoxDecoration(
+                      color: secondaryColor,
+                      borderRadius: BorderRadius.circular(12),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withAlpha(8),
+                          blurRadius: 6,
+                          offset: const Offset(0, 2),
+                        ),
+                      ],
+                    ),
+                    padding: EdgeInsets.all(isDesktop ? 24.0 : 16.0),
                     child:
                         isDesktop
                             ? _buildDesktopLayout()
                             : _buildMobileLayout(),
                   ),
-                ),
+                  const SizedBox(height: 40),
 
-                const SizedBox(height: 40),
-
-                // Development Team Section (moved from home)
-                _buildDevelopmentTeamSection(isDesktop),
-
-                const SizedBox(height: 40),
-
-                // Support Facilities Section (moved from home)
-                _buildSupportFacilitiesSection(isDesktop),
-              ],
+                  // Tech Section (Conditional)
+                  if (_showTech) ...[
+                    _buildSectionTitle("Teknologi Kami", context),
+                    const SizedBox(height: 24),
+                    _buildTechGrid(isDesktop),
+                    const SizedBox(height: 40),
+                  ],
+                ],
+              ),
             ),
           ),
         ),
@@ -65,403 +77,25 @@ class _CommunityScreenState extends State<CommunityScreen> {
     );
   }
 
-  Widget _buildDevelopmentTeamSection(bool isDesktop) {
-    return Card(
-      elevation: 0,
-      color: Colors.grey[50],
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-      child: Padding(
-        padding: EdgeInsets.all(isDesktop ? 32.0 : 20.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Icon(
-                  Icons.group,
-                  size: isDesktop ? 32 : 28,
-                  color: Colors.blue[800],
-                ),
-                const SizedBox(width: 12),
-                Text(
-                  'Tim Pengembang',
-                  style: TextStyle(
-                    fontSize: isDesktop ? 24 : 20,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.blue[800],
-                  ),
-                ),
-              ],
+  // Widget untuk judul section yang konsisten
+  Widget _buildSectionTitle(String title, BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 16),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            title,
+            style: TextStyle(
+              fontSize: 28,
+              fontWeight: FontWeight.w600,
+              color: textPrimary,
+              letterSpacing: -0.5,
             ),
-            const SizedBox(height: 16),
-            Container(
-              height: 2,
-              color: Colors.blue[100],
-              margin: const EdgeInsets.only(bottom: 20),
-            ),
-
-            Text(
-              'Tim profesional yang bertanggung jawab untuk mengembangkan aplikasi:',
-              style: TextStyle(
-                fontSize: isDesktop ? 16 : 14,
-                color: Colors.grey[700],
-                height: 1.5,
-              ),
-            ),
-            const SizedBox(height: 24),
-
-            // Team Grid - 2 cards per row in desktop
-            isDesktop ? _buildDesktopTeamGrid() : _buildMobileTeamList(),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildSupportFacilitiesSection(bool isDesktop) {
-    return Card(
-      elevation: 0,
-      color: Colors.grey[50],
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-      child: Padding(
-        padding: EdgeInsets.all(isDesktop ? 32.0 : 20.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Icon(
-                  Icons.construction,
-                  size: isDesktop ? 32 : 28,
-                  color: Colors.blue[800],
-                ),
-                const SizedBox(width: 12),
-                Text(
-                  'Fasilitas Pendukung',
-                  style: TextStyle(
-                    fontSize: isDesktop ? 24 : 20,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.blue[800],
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 16),
-            Container(
-              height: 2,
-              color: Colors.blue[100],
-              margin: const EdgeInsets.only(bottom: 20),
-            ),
-
-            Text(
-              'Fasilitas dan infrastruktur yang mendukung proses pengembangan:',
-              style: TextStyle(
-                fontSize: isDesktop ? 16 : 14,
-                color: Colors.grey[700],
-                height: 1.5,
-              ),
-            ),
-            const SizedBox(height: 24),
-
-            // Facilities Grid - 2 cards per row in desktop
-            isDesktop
-                ? _buildDesktopFacilitiesGrid()
-                : _buildMobileFacilitiesList(),
-            const SizedBox(height: 16),
-
-            Text(
-              '*Peralatan tambahan dapat disesuaikan dengan kebutuhan proyek',
-              style: TextStyle(
-                fontSize: isDesktop ? 14 : 12,
-                fontStyle: FontStyle.italic,
-                color: Colors.grey[600],
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildDesktopTeamGrid() {
-    return GridView.count(
-      shrinkWrap: true,
-      physics: const NeverScrollableScrollPhysics(),
-      crossAxisCount: 2,
-      childAspectRatio: 3,
-      crossAxisSpacing: 20,
-      mainAxisSpacing: 20,
-      children: [
-        _buildTeamRoleCard(
-          'Project Manager',
-          Icons.assignment,
-          'Mengelola proyek dan tim',
-          Colors.blue,
-        ),
-        _buildTeamRoleCard(
-          'UI/UX Designer',
-          Icons.design_services,
-          'Mendesain antarmuka pengguna',
-          Colors.purple,
-        ),
-        _buildTeamRoleCard(
-          'Frontend Developer',
-          Icons.code,
-          'Membangun tampilan aplikasi',
-          Colors.green,
-        ),
-        _buildTeamRoleCard(
-          'Backend Developer',
-          Icons.storage,
-          'Mengembangkan sistem server',
-          Colors.orange,
-        ),
-        _buildTeamRoleCard(
-          'System Engineer',
-          Icons.settings,
-          'Menjaga infrastruktur IT',
-          Colors.red,
-        ),
-        _buildTeamRoleCard(
-          'Admin Operasional',
-          Icons.people,
-          'Mengelola administrasi',
-          Colors.teal,
-        ),
-      ],
-    );
-  }
-
-  Widget _buildMobileTeamList() {
-    return Column(
-      children: [
-        _buildTeamRoleCard(
-          'Project Manager',
-          Icons.assignment,
-          'Mengelola proyek dan tim',
-          Colors.blue,
-        ),
-        const SizedBox(height: 12),
-        _buildTeamRoleCard(
-          'UI/UX Designer',
-          Icons.design_services,
-          'Mendesain antarmuka pengguna',
-          Colors.purple,
-        ),
-        const SizedBox(height: 12),
-        _buildTeamRoleCard(
-          'Frontend Developer',
-          Icons.code,
-          'Membangun tampilan aplikasi',
-          Colors.green,
-        ),
-        const SizedBox(height: 12),
-        _buildTeamRoleCard(
-          'Backend Developer',
-          Icons.storage,
-          'Mengembangkan sistem server',
-          Colors.orange,
-        ),
-        const SizedBox(height: 12),
-        _buildTeamRoleCard(
-          'System Engineer',
-          Icons.settings,
-          'Menjaga infrastruktur IT',
-          Colors.red,
-        ),
-        const SizedBox(height: 12),
-        _buildTeamRoleCard(
-          'Admin Operasional',
-          Icons.people,
-          'Mengelola administrasi',
-          Colors.teal,
-        ),
-      ],
-    );
-  }
-
-  Widget _buildTeamRoleCard(
-    String title,
-    IconData icon,
-    String description,
-    Color color,
-  ) {
-    return Container(
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(12),
-      ),
-      child: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Row(
-          children: [
-            // Icon Section
-            Container(
-              padding: const EdgeInsets.all(12),
-              decoration: BoxDecoration(
-                color: color.withAlpha(100),
-                borderRadius: BorderRadius.circular(8),
-              ),
-              child: Icon(icon, size: 32, color: color),
-            ),
-            const SizedBox(width: 16),
-
-            // Info Section
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    title,
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.blue[800],
-                    ),
-                  ),
-                  const SizedBox(height: 8),
-                  Container(width: 40, height: 4, color: color),
-                  const SizedBox(height: 8),
-                  Text(
-                    description,
-                    style: TextStyle(
-                      fontSize: 14,
-                      color: Colors.grey[600],
-                      height: 1.4,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildDesktopFacilitiesGrid() {
-    return GridView.count(
-      shrinkWrap: true,
-      physics: const NeverScrollableScrollPhysics(),
-      crossAxisCount: 2,
-      childAspectRatio: 3,
-      crossAxisSpacing: 20,
-      mainAxisSpacing: 20,
-      children: [
-        _buildFacilityCard(
-          'Gedung dengan Ruang Kerja',
-          'Ruang kerja ergonomis dengan fasilitas lengkap',
-          Icons.business,
-          Colors.blue,
-        ),
-        _buildFacilityCard(
-          'Koneksi Internet Stabil',
-          'Koneksi high-speed dengan backup connection',
-          Icons.wifi,
-          Colors.green,
-        ),
-        _buildFacilityCard(
-          'Server untuk Testing',
-          'Server dedicated untuk pengembangan dan testing',
-          Icons.storage,
-          Colors.orange,
-        ),
-        _buildFacilityCard(
-          'Workstation Profesional',
-          'PC/Laptop dengan spesifikasi tinggi untuk tim',
-          Icons.computer,
-          Colors.purple,
-        ),
-      ],
-    );
-  }
-
-  Widget _buildMobileFacilitiesList() {
-    return Column(
-      children: [
-        _buildFacilityCard(
-          'Gedung dengan Ruang Kerja',
-          'Ruang kerja ergonomis dengan fasilitas lengkap',
-          Icons.business,
-          Colors.blue,
-        ),
-        const SizedBox(height: 12),
-        _buildFacilityCard(
-          'Koneksi Internet Stabil',
-          'Koneksi high-speed dengan backup connection',
-          Icons.wifi,
-          Colors.green,
-        ),
-        const SizedBox(height: 12),
-        _buildFacilityCard(
-          'Server untuk Testing',
-          'Server dedicated untuk pengembangan dan testing',
-          Icons.storage,
-          Colors.orange,
-        ),
-        const SizedBox(height: 12),
-        _buildFacilityCard(
-          'Workstation Profesional',
-          'PC/Laptop dengan spesifikasi tinggi untuk tim',
-          Icons.computer,
-          Colors.purple,
-        ),
-      ],
-    );
-  }
-
-  Widget _buildFacilityCard(
-    String title,
-    String description,
-    IconData icon,
-    Color color,
-  ) {
-    return Container(
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(12),
-      ),
-      child: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Row(
-          children: [
-            Container(
-              padding: const EdgeInsets.all(12),
-              decoration: BoxDecoration(
-                color: color.withAlpha(100),
-                borderRadius: BorderRadius.circular(8),
-              ),
-              child: Icon(icon, size: 32, color: color),
-            ),
-            const SizedBox(width: 16),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    title,
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.blue[800],
-                    ),
-                  ),
-                  const SizedBox(height: 8),
-                  Text(
-                    description,
-                    style: TextStyle(
-                      fontSize: 14,
-                      color: Colors.grey[600],
-                      height: 1.4,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
+          ),
+          const SizedBox(height: 8),
+          Container(height: 2, width: 60, color: primaryColor.withAlpha(180)),
+        ],
       ),
     );
   }
@@ -494,69 +128,35 @@ class _CommunityScreenState extends State<CommunityScreen> {
       children: [
         // Header Text
         Text(
-          'Komunitas Developer Indonesia',
+          'Komunitas Developer Digtren',
           textAlign: centerText ? TextAlign.center : TextAlign.left,
           style: TextStyle(
             fontSize: 28,
-            fontWeight: FontWeight.bold,
-            color: Colors.blue[800],
+            fontWeight: FontWeight.w700,
+            color: textPrimary,
             height: 1.3,
           ),
         ),
         const SizedBox(height: 16),
         if (!centerText)
           Container(
-            height: 4,
+            height: 2,
             width: 80,
-            color: Colors.blue[800],
+            color: primaryColor,
             margin: const EdgeInsets.only(bottom: 20),
           ),
         Text(
-          'Bergabunglah bersama komunitas pengembang dari seluruh Indonesia untuk belajar, berkolaborasi, dan membangun proyek open source yang berdampak.',
+          'Bergabunglah bersama komunitas pengembang Digtren untuk belajar, berkolaborasi, dan membangun solusi digital untuk pesantren.',
           textAlign: centerText ? TextAlign.center : TextAlign.left,
-          style: TextStyle(fontSize: 16, color: Colors.grey[700], height: 1.6),
+          style: TextStyle(fontSize: 16, color: textSecondary, height: 1.6),
         ),
         const SizedBox(height: 32),
 
         // Tech Toggle Button
-        GestureDetector(
-          onTap: () => setState(() => _showTech = !_showTech),
-          child: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-            decoration: BoxDecoration(
-              color: Colors.blue[800]?.withAlpha(25),
-              borderRadius: BorderRadius.circular(8),
-              border: Border.all(color: Colors.blue[800]!.withAlpha(50)),
-            ),
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Icon(
-                  _showTech ? Icons.visibility_off : Icons.visibility,
-                  color: Colors.blue[800],
-                  size: 20,
-                ),
-                const SizedBox(width: 8),
-                Text(
-                  _showTech ? 'Sembunyikan Teknologi' : 'Lihat Teknologi Kami',
-                  style: TextStyle(
-                    color: Colors.blue[800],
-                    fontSize: 14,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
-
-        // Technology Grid (Conditional)
-        if (_showTech) ...[
-          const SizedBox(height: 24),
-          _buildTechGrid(centerText: centerText),
-        ],
-
+        _buildToggleButton(centerText),
         const SizedBox(height: 32),
+
+        // Action Buttons
         Wrap(
           spacing: 16,
           runSpacing: 16,
@@ -578,7 +178,40 @@ class _CommunityScreenState extends State<CommunityScreen> {
     );
   }
 
-  Widget _buildTechGrid({bool centerText = false}) {
+  Widget _buildToggleButton(bool centerText) {
+    return GestureDetector(
+      onTap: () => setState(() => _showTech = !_showTech),
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+        decoration: BoxDecoration(
+          color: primaryColor.withAlpha(25),
+          borderRadius: BorderRadius.circular(8),
+          border: Border.all(color: primaryColor.withAlpha(50)),
+        ),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(
+              _showTech ? Icons.visibility_off : Icons.visibility,
+              color: primaryColor,
+              size: 20,
+            ),
+            const SizedBox(width: 8),
+            Text(
+              _showTech ? 'Sembunyikan Teknologi' : 'Lihat Teknologi Kami',
+              style: TextStyle(
+                color: primaryColor,
+                fontSize: 14,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildTechGrid(bool isDesktop) {
     final techItems = [
       _TechItem('UI/UX', [
         _TechSubItem('Figma', Icons.design_services, Colors.pink),
@@ -609,64 +242,76 @@ class _CommunityScreenState extends State<CommunityScreen> {
       ]),
     ];
 
-    return Column(
-      children:
-          techItems.map((category) {
-            return Padding(
-              padding: const EdgeInsets.only(bottom: 24),
-              child: Column(
-                crossAxisAlignment:
-                    centerText
-                        ? CrossAxisAlignment.center
-                        : CrossAxisAlignment.start,
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(12),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withAlpha(8),
+            blurRadius: 6,
+            offset: const Offset(0, 2),
+          ),
+        ],
+      ),
+      padding: const EdgeInsets.all(24),
+      child:
+          isDesktop
+              ? Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    category.category,
-                    style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.w600,
-                      color: Colors.blue[800],
+                  for (var category in techItems)
+                    Expanded(
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 8),
+                        child: _buildTechCategory(category),
+                      ),
                     ),
-                  ),
-                  const SizedBox(height: 12),
-                  Wrap(
-                    spacing: 12,
-                    runSpacing: 12,
-                    alignment:
-                        centerText ? WrapAlignment.center : WrapAlignment.start,
-                    children:
-                        category.items.map((tech) {
-                          return Column(
-                            children: [
-                              Container(
-                                padding: const EdgeInsets.all(12),
-                                decoration: BoxDecoration(
-                                  color: tech.color.withAlpha(25),
-                                  borderRadius: BorderRadius.circular(12),
-                                  border: Border.all(
-                                    color: tech.color.withAlpha(50),
-                                  ),
-                                ),
-                                child: Icon(
-                                  tech.icon,
-                                  size: 28,
-                                  color: tech.color,
-                                ),
-                              ),
-                              const SizedBox(height: 6),
-                              Text(
-                                tech.label,
-                                style: const TextStyle(fontSize: 12),
-                                textAlign: TextAlign.center,
-                              ),
-                            ],
-                          );
-                        }).toList(),
-                  ),
                 ],
-              ),
-            );
-          }).toList(),
+              )
+              : Column(children: techItems.map(_buildTechCategory).toList()),
+    );
+  }
+
+  Widget _buildTechCategory(_TechItem category) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          category.category,
+          style: TextStyle(
+            fontSize: 18,
+            fontWeight: FontWeight.w600,
+            color: textPrimary,
+          ),
+        ),
+        const SizedBox(height: 16),
+        Wrap(
+          spacing: 12,
+          runSpacing: 12,
+          children:
+              category.items.map((tech) {
+                return Column(
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.all(12),
+                      decoration: BoxDecoration(
+                        color: tech.color.withAlpha(25),
+                        borderRadius: BorderRadius.circular(12),
+                        border: Border.all(color: tech.color.withAlpha(50)),
+                      ),
+                      child: Icon(tech.icon, size: 28, color: tech.color),
+                    ),
+                    const SizedBox(height: 8),
+                    Text(
+                      tech.label,
+                      style: TextStyle(fontSize: 12, color: textSecondary),
+                    ),
+                  ],
+                );
+              }).toList(),
+        ),
+      ],
     );
   }
 
@@ -676,28 +321,22 @@ class _CommunityScreenState extends State<CommunityScreen> {
         maxWidth: mobile ? double.infinity : 500,
         maxHeight: mobile ? 220 : 350,
       ),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(12),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withAlpha(10),
+            blurRadius: 8,
+            offset: const Offset(0, 3),
+          ),
+        ],
+      ),
       child: ClipRRect(
         borderRadius: BorderRadius.circular(12),
         child: Image.asset(
           'assets/images/3.jpeg',
           fit: BoxFit.cover,
           errorBuilder: (context, error, stackTrace) => _buildImageError(),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildImageError() {
-    return Container(
-      color: Colors.grey[200],
-      child: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Icon(Icons.people, size: 50, color: Colors.grey),
-            const SizedBox(height: 8),
-            Text('Gambar Komunitas', style: TextStyle(color: Colors.grey[600])),
-          ],
         ),
       ),
     );
@@ -713,10 +352,26 @@ class _CommunityScreenState extends State<CommunityScreen> {
       icon: Icon(icon, size: 20),
       label: Text(label),
       style: ElevatedButton.styleFrom(
-        backgroundColor: Colors.blue[800],
+        backgroundColor: primaryColor,
         foregroundColor: Colors.white,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+      ),
+    );
+  }
+
+  Widget _buildImageError() {
+    return Container(
+      color: secondaryColor,
+      child: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(Icons.people, size: 50, color: Colors.grey[400]),
+            const SizedBox(height: 8),
+            Text('Gambar Komunitas', style: TextStyle(color: Colors.grey[500])),
+          ],
+        ),
       ),
     );
   }
