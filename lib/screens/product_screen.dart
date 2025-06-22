@@ -13,14 +13,14 @@ class ProductScreen extends StatefulWidget {
 class _ProductScreenState extends State<ProductScreen> {
   final PageController _pageController = PageController();
   final List<String> _appScreenshots = [
+    'assets/product/2.webp',
     'assets/product/poster.webp',
     'assets/product/1.webp',
-    'assets/product/2.webp',
     'assets/product/3.webp',
     'assets/product/admin.webp',
   ];
 
-  // Warna konsisten dengan home screen
+  // Consistent color scheme
   static const Color primaryColor = Color(0xFF6C63FF);
   static const Color secondaryColor = Color(0xFFF8F9FA);
   static const Color textPrimary = Color(0xFF333333);
@@ -32,8 +32,6 @@ class _ProductScreenState extends State<ProductScreen> {
     );
     if (await canLaunchUrl(url)) {
       await launchUrl(url, mode: LaunchMode.externalApplication);
-    } else {
-      throw 'Could not launch $url';
     }
   }
 
@@ -44,80 +42,80 @@ class _ProductScreenState extends State<ProductScreen> {
 
     showDialog(
       context: context,
-      builder: (context) {
-        return Dialog(
-          backgroundColor: Colors.transparent,
-          insetPadding: EdgeInsets.zero,
-          child: Stack(
-            children: [
-              PageView.builder(
-                controller: fullScreenController,
-                itemCount: _appScreenshots.length,
-                itemBuilder: (context, index) {
-                  return PhotoView(
-                    imageProvider: AssetImage(_appScreenshots[index]),
-                    minScale: PhotoViewComputedScale.contained,
-                    maxScale: PhotoViewComputedScale.covered * 2,
-                    heroAttributes: PhotoViewHeroAttributes(
-                      tag: 'image_$index',
-                    ),
-                  );
-                },
-              ),
-              Positioned(
-                top: 40,
-                right: 20,
-                child: IconButton(
-                  icon: const Icon(Icons.close, color: Colors.white, size: 30),
-                  onPressed: () => Navigator.of(context).pop(),
-                ),
-              ),
-              if (_appScreenshots.length > 1)
-                Positioned(
-                  left: 20,
-                  top: 0,
-                  bottom: 0,
-                  child: Center(
-                    child: IconButton(
-                      icon: const Icon(
-                        Icons.chevron_left,
-                        color: Colors.white,
-                        size: 40,
+      builder:
+          (context) => Dialog(
+            backgroundColor: Colors.transparent,
+            insetPadding: EdgeInsets.zero,
+            child: Stack(
+              children: [
+                PageView.builder(
+                  controller: fullScreenController,
+                  itemCount: _appScreenshots.length,
+                  itemBuilder:
+                      (context, index) => PhotoView(
+                        imageProvider: AssetImage(_appScreenshots[index]),
+                        minScale: PhotoViewComputedScale.contained,
+                        maxScale: PhotoViewComputedScale.covered * 2,
+                        heroAttributes: PhotoViewHeroAttributes(
+                          tag: 'image_$index',
+                        ),
                       ),
-                      onPressed: () {
-                        fullScreenController.previousPage(
-                          duration: const Duration(milliseconds: 300),
-                          curve: Curves.easeInOut,
-                        );
-                      },
-                    ),
-                  ),
                 ),
-              if (_appScreenshots.length > 1)
                 Positioned(
+                  top: 40,
                   right: 20,
-                  top: 0,
-                  bottom: 0,
-                  child: Center(
-                    child: IconButton(
-                      icon: const Icon(
-                        Icons.chevron_right,
-                        color: Colors.white,
-                        size: 40,
-                      ),
-                      onPressed: () {
-                        fullScreenController.nextPage(
-                          duration: const Duration(milliseconds: 300),
-                          curve: Curves.easeInOut,
-                        );
-                      },
+                  child: IconButton(
+                    icon: const Icon(
+                      Icons.close,
+                      color: Colors.white,
+                      size: 30,
                     ),
+                    onPressed: () => Navigator.of(context).pop(),
                   ),
                 ),
-            ],
+                if (_appScreenshots.length > 1) ...[
+                  Positioned(
+                    left: 20,
+                    top: 0,
+                    bottom: 0,
+                    child: Center(
+                      child: IconButton(
+                        icon: const Icon(
+                          Icons.chevron_left,
+                          color: Colors.white,
+                          size: 40,
+                        ),
+                        onPressed:
+                            () => fullScreenController.previousPage(
+                              duration: const Duration(milliseconds: 300),
+                              curve: Curves.easeInOut,
+                            ),
+                      ),
+                    ),
+                  ),
+                  Positioned(
+                    right: 20,
+                    top: 0,
+                    bottom: 0,
+                    child: Center(
+                      child: IconButton(
+                        icon: const Icon(
+                          Icons.chevron_right,
+                          color: Colors.white,
+                          size: 40,
+                        ),
+                        onPressed:
+                            () => fullScreenController.nextPage(
+                              duration: const Duration(milliseconds: 300),
+                              curve: Curves.easeInOut,
+                            ),
+                      ),
+                    ),
+                  ),
+                ],
+              ],
+            ),
           ),
-        );
-      },
     );
   }
 
@@ -144,7 +142,6 @@ class _ProductScreenState extends State<ProductScreen> {
               constraints: const BoxConstraints(maxWidth: 1200),
               child: Column(
                 children: [
-                  // Main Product Card
                   Container(
                     decoration: BoxDecoration(
                       color: secondaryColor,
@@ -157,7 +154,7 @@ class _ProductScreenState extends State<ProductScreen> {
                         ),
                       ],
                     ),
-                    padding: EdgeInsets.all(isDesktop ? 24.0 : 16.0),
+                    padding: EdgeInsets.all(isDesktop ? 24 : 16),
                     child:
                         isDesktop
                             ? _buildDesktopLayout()
@@ -165,14 +162,14 @@ class _ProductScreenState extends State<ProductScreen> {
                   ),
                   const SizedBox(height: 40),
 
-                  // Additional Info Section
+                  // Features Section
                   _buildSectionTitle("Fitur Unggulan", context),
                   const SizedBox(height: 24),
                   _buildFeaturesSection(isDesktop),
                   const SizedBox(height: 40),
 
                   // Description Section
-                  _buildSectionTitle("Tentang Produk", context),
+                  _buildSectionTitle("Detail Produk", context),
                   const SizedBox(height: 24),
                   _buildDescriptionSection(),
                 ],
@@ -184,7 +181,6 @@ class _ProductScreenState extends State<ProductScreen> {
     );
   }
 
-  // Widget untuk judul section yang konsisten dengan home screen
   Widget _buildSectionTitle(String title, BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 16),
@@ -211,15 +207,16 @@ class _ProductScreenState extends State<ProductScreen> {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        // App Icon and Basic Info
+        // App Info Column
         Container(
-          width: 200,
+          width: 240,
           padding: const EdgeInsets.only(right: 32),
           child: Column(
             children: [
+              // App Logo
               Container(
-                width: 150,
-                height: 150,
+                width: 160,
+                height: 160,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(16),
                   color: Colors.white,
@@ -236,46 +233,50 @@ class _ProductScreenState extends State<ProductScreen> {
                   child: Image.asset(
                     'assets/product/logo.png',
                     fit: BoxFit.contain,
-                    errorBuilder:
-                        (context, error, stackTrace) => _buildImageError(),
+                    errorBuilder: (_, __, ___) => _buildImageError(),
                   ),
                 ),
               ),
               const SizedBox(height: 24),
+
+              // App Info
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Bakid App',
+                    style: TextStyle(
+                      fontSize: 22,
+                      fontWeight: FontWeight.w700,
+                      color: textPrimary,
+                    ),
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    'Aplikasi manajemen sekolah',
+                    style: TextStyle(fontSize: 16, color: textSecondary),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 24),
+
+              // Download Button
               _buildDownloadButton(),
-              const SizedBox(height: 16),
-              _buildInfoBadges(),
+              const SizedBox(height: 24),
+
+              // App Metadata
+              _buildAppMetadata(),
             ],
           ),
         ),
 
-        // Main Content
+        // Expanded Content
         Expanded(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                'Bakid App',
-                style: TextStyle(
-                  fontSize: 32,
-                  fontWeight: FontWeight.w700,
-                  color: textPrimary,
-                  height: 1.2,
-                ),
-              ),
-              const SizedBox(height: 8),
-              Text(
-                'Aplikasi manajemen sekolah',
-                style: TextStyle(
-                  fontSize: 18,
-                  color: textSecondary,
-                  height: 1.4,
-                ),
-              ),
-              const SizedBox(height: 24),
-
-              // Screenshots Slider
-              _buildScreenshotsSlider(false),
+              // Screenshots Section
+              _buildScreenshotsSection(false),
               const SizedBox(height: 32),
             ],
           ),
@@ -286,9 +287,8 @@ class _ProductScreenState extends State<ProductScreen> {
 
   Widget _buildMobileLayout() {
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        // App Icon
+        // App Logo
         Container(
           width: 120,
           height: 120,
@@ -308,34 +308,38 @@ class _ProductScreenState extends State<ProductScreen> {
             child: Image.asset(
               'assets/product/logo.png',
               fit: BoxFit.contain,
-              errorBuilder: (context, error, stackTrace) => _buildImageError(),
+              errorBuilder: (_, __, ___) => _buildImageError(),
             ),
           ),
         ),
         const SizedBox(height: 20),
 
-        // Title
-        Text(
-          'Bakid App',
-          style: TextStyle(
-            fontSize: 28,
-            fontWeight: FontWeight.w700,
-            color: textPrimary,
-          ),
-        ),
-        const SizedBox(height: 4),
-        Text(
-          'Aplikasi manajemen sekolah',
-          style: TextStyle(fontSize: 16, color: textSecondary),
+        // App Info
+        Column(
+          children: [
+            Text(
+              'Bakid App',
+              style: TextStyle(
+                fontSize: 24,
+                fontWeight: FontWeight.w700,
+                color: textPrimary,
+              ),
+            ),
+            const SizedBox(height: 4),
+            Text(
+              'Aplikasi manajemen sekolah',
+              style: TextStyle(fontSize: 16, color: textSecondary),
+            ),
+          ],
         ),
         const SizedBox(height: 20),
 
-        // Info Badges
-        _buildInfoBadges(),
+        // App Metadata
+        _buildAppMetadata(),
         const SizedBox(height: 20),
 
-        // Screenshots Slider
-        _buildScreenshotsSlider(true),
+        // Screenshots Section
+        _buildScreenshotsSection(true),
         const SizedBox(height: 24),
 
         // Download Button
@@ -344,36 +348,44 @@ class _ProductScreenState extends State<ProductScreen> {
     );
   }
 
-  Widget _buildScreenshotsSlider(bool isMobile) {
+  Widget _buildScreenshotsSection(bool isMobile) {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
+        Text(
+          'Galeri Aplikasi',
+          style: TextStyle(
+            fontSize: 18,
+            fontWeight: FontWeight.w600,
+            color: textPrimary,
+          ),
+        ),
+        const SizedBox(height: 16),
         SizedBox(
           height: isMobile ? 200 : 300,
           child: PageView.builder(
             controller: _pageController,
             itemCount: _appScreenshots.length,
-            itemBuilder: (context, index) {
-              return GestureDetector(
-                onTap: () => _showFullScreenImage(context, index),
-                child: Padding(
-                  padding: EdgeInsets.symmetric(
-                    horizontal: isMobile ? 8.0 : 16.0,
-                  ),
-                  child: Hero(
-                    tag: 'image_$index',
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(8),
-                      child: Image.asset(
-                        _appScreenshots[index],
-                        fit: BoxFit.cover,
-                        errorBuilder:
-                            (context, error, stackTrace) => _buildImageError(),
+            itemBuilder:
+                (context, index) => GestureDetector(
+                  onTap: () => _showFullScreenImage(context, index),
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: isMobile ? 8 : 16,
+                    ),
+                    child: Hero(
+                      tag: 'image_$index',
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(8),
+                        child: Image.asset(
+                          _appScreenshots[index],
+                          fit: BoxFit.cover,
+                          errorBuilder: (_, __, ___) => _buildImageError(),
+                        ),
                       ),
                     ),
                   ),
                 ),
-              );
-            },
           ),
         ),
         const SizedBox(height: 16),
@@ -393,44 +405,31 @@ class _ProductScreenState extends State<ProductScreen> {
     );
   }
 
-  Widget _buildDownloadButton() {
-    return SizedBox(
-      width: double.infinity,
-      child: ElevatedButton(
-        onPressed: _launchDownload,
-        style: ElevatedButton.styleFrom(
-          backgroundColor: primaryColor,
-          foregroundColor: Colors.white,
-          padding: const EdgeInsets.symmetric(vertical: 14),
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-          elevation: 0,
-        ),
-        child: const Text(
-          'UNDUH APLIKASI',
-          style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildInfoBadges() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
+  Widget _buildAppMetadata() {
+    return Wrap(
+      spacing: 24,
+      runSpacing: 16,
+      alignment: WrapAlignment.center,
       children: [
-        _buildInfoBadge(Icons.download, '1.000+', 'Unduhan'),
-        const SizedBox(width: 20),
-        _buildInfoBadge(Icons.star, '4.8', 'Rating'),
-        const SizedBox(width: 20),
-        _buildInfoBadge(Icons.phone_android, '10+', 'Android'),
+        _buildMetadataItem(Icons.download, '1.000+', 'Unduhan'),
+        _buildMetadataItem(Icons.star, '4.8', 'Rating'),
+        _buildMetadataItem(Icons.phone_android, '10+', 'Android'),
       ],
     );
   }
 
-  Widget _buildInfoBadge(IconData icon, String value, String label) {
+  Widget _buildMetadataItem(IconData icon, String value, String label) {
     return Column(
       children: [
-        Icon(icon, size: 24, color: primaryColor),
-        const SizedBox(height: 4),
+        Container(
+          padding: const EdgeInsets.all(10),
+          decoration: BoxDecoration(
+            color: primaryColor.withAlpha(20),
+            shape: BoxShape.circle,
+          ),
+          child: Icon(icon, size: 20, color: primaryColor),
+        ),
+        const SizedBox(height: 8),
         Text(
           value,
           style: TextStyle(
@@ -441,6 +440,26 @@ class _ProductScreenState extends State<ProductScreen> {
         ),
         Text(label, style: TextStyle(fontSize: 12, color: textSecondary)),
       ],
+    );
+  }
+
+  Widget _buildDownloadButton() {
+    return SizedBox(
+      width: double.infinity,
+      child: ElevatedButton(
+        onPressed: _launchDownload,
+        style: ElevatedButton.styleFrom(
+          backgroundColor: primaryColor,
+          foregroundColor: Colors.white,
+          padding: const EdgeInsets.symmetric(vertical: 16),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+          elevation: 0,
+        ),
+        child: const Text(
+          'UNDUH APLIKASI',
+          style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+        ),
+      ),
     );
   }
 
@@ -493,18 +512,14 @@ class _ProductScreenState extends State<ProductScreen> {
       padding: const EdgeInsets.all(24),
       child:
           isDesktop
-              ? GridView.builder(
+              ? GridView.count(
                 shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 3,
-                  crossAxisSpacing: 24,
-                  mainAxisSpacing: 24,
-                  childAspectRatio: 3,
-                ),
-                itemCount: features.length,
-                itemBuilder:
-                    (context, index) => _buildFeatureItem(features[index]),
+                crossAxisCount: 3,
+                crossAxisSpacing: 24,
+                mainAxisSpacing: 24,
+                childAspectRatio: 3,
+                children: features.map(_buildFeatureItem).toList(),
               )
               : Column(
                 children:
@@ -521,43 +536,50 @@ class _ProductScreenState extends State<ProductScreen> {
   }
 
   Widget _buildFeatureItem(Map<String, dynamic> feature) {
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Container(
-          padding: const EdgeInsets.all(8),
-          decoration: BoxDecoration(
-            color: primaryColor.withAlpha(50),
-            borderRadius: BorderRadius.circular(8),
+    return Container(
+      decoration: BoxDecoration(
+        color: secondaryColor,
+        borderRadius: BorderRadius.circular(8),
+      ),
+      padding: const EdgeInsets.all(16),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Container(
+            padding: const EdgeInsets.all(10),
+            decoration: BoxDecoration(
+              color: primaryColor.withAlpha(20),
+              borderRadius: BorderRadius.circular(8),
+            ),
+            child: Icon(feature['icon'], size: 24, color: primaryColor),
           ),
-          child: Icon(feature['icon'], size: 24, color: primaryColor),
-        ),
-        const SizedBox(width: 16),
-        Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                feature['title'],
-                style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w600,
-                  color: textPrimary,
+          const SizedBox(width: 16),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  feature['title'],
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w600,
+                    color: textPrimary,
+                  ),
                 ),
-              ),
-              const SizedBox(height: 4),
-              Text(
-                feature['desc'],
-                style: TextStyle(
-                  fontSize: 14,
-                  color: textSecondary,
-                  height: 1.4,
+                const SizedBox(height: 4),
+                Text(
+                  feature['desc'],
+                  style: TextStyle(
+                    fontSize: 14,
+                    color: textSecondary,
+                    height: 1.4,
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 
@@ -583,8 +605,7 @@ class _ProductScreenState extends State<ProductScreen> {
             'Dari pengelolaan jadwal hingga pencatatan kegiatan, semua bisa dilakukan dalam satu aplikasi yang sederhana namun efektif.\n\n'
             'Peluncuran ini menjadi langkah awal dari Digtren (Digital Pesantren)—sebuah gerakan transformasi digital untuk mewujudkan pesantren yang lebih modern dan mandiri secara teknologi. '
             'Peluncuran BAKID hanyalah langkah awal. '
-            'Digtren akan terus dikembangkan menjadi ekosistem digital terpadu yang menyatukan semua lini aktivitas pesantren dalam satu sistem yang cerdas dan terintegrasi.\n\n'
-            'Langkah selanjutnya adalah menghadirkan aplikasi khusus untuk wali santri—agar orang tua bisa memantau langsung aktivitas putra-putrinya di pesantren, mulai dari kehadiran, jadwal kegiatan, laporan keuangan, hingga perkembangan akademik dan pembinaan karakter.',
+            'Digtren akan terus dikembangkan menjadi ekosistem digital terpadu yang menyatukan semua lini aktivitas pesantren dalam satu sistem yang cerdas dan terintegrasi.',
             style: TextStyle(fontSize: 15, color: textSecondary, height: 1.6),
           ),
         ],
