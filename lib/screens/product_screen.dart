@@ -28,7 +28,7 @@ class _ProductScreenState extends State<ProductScreen> {
 
   Future<void> _launchDownload() async {
     final url = Uri.parse(
-      'https://drive.google.com/file/d/1Td4ocgqUJuLc0NyPqZzaT2pL_IRARfui/view?usp=sharing',
+      'https://drive.google.com/file/d/1FjDEkVFa3yODkSSjH_qvtUvMzalLnMVP/view?usp=sharing',
     );
     if (await canLaunchUrl(url)) {
       await launchUrl(url, mode: LaunchMode.externalApplication);
