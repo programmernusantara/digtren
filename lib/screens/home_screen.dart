@@ -1,73 +1,86 @@
 import 'package:flutter/material.dart';
-import 'package:youtube_player_iframe/youtube_player_iframe.dart';
 
-class HomeScreen extends StatefulWidget {
+class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
-
-  @override
-  State<HomeScreen> createState() => _HomeScreenState();
-}
-
-class _HomeScreenState extends State<HomeScreen> {
-  late YoutubePlayerController _controller;
-
-  @override
-  void initState() {
-    super.initState();
-
-    // Initialize YouTube player controller
-    _controller = YoutubePlayerController(
-      params: const YoutubePlayerParams(
-        showControls: true,
-        mute: false,
-        showFullscreenButton: true,
-        loop: false,
-        enableJavaScript: true, // Required for web
-      ),
-    );
-
-    // Load video after controller is initialized
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      _controller.loadVideoById(videoId: 'DWPzoDGxHnE');
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
     final isDesktop = MediaQuery.of(context).size.width >= 768;
+    const Color primaryColor = Color(0xFF5C6BC0); // Soft indigo
+    const Color backgroundColor = Color(0xFFFAFAFA); // Very light grey
 
-    return SingleChildScrollView(
-      child: Container(
-        padding: EdgeInsets.symmetric(
-          horizontal: isDesktop ? 40 : 20,
-          vertical: isDesktop ? 30 : 20,
-        ),
-        child: Center(
-          child: ConstrainedBox(
-            constraints: const BoxConstraints(maxWidth: 1200),
-            child: Column(
-              children: [
-                // Header Card
-                Card(
-                  elevation: 0,
-                  color: Colors.grey[50],
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(16),
+    return Scaffold(
+      body: SingleChildScrollView(
+        child: Container(
+          color: backgroundColor,
+          padding: EdgeInsets.symmetric(
+            horizontal: isDesktop ? 40 : 20,
+            vertical: isDesktop ? 30 : 20,
+          ),
+          child: Center(
+            child: ConstrainedBox(
+              constraints: const BoxConstraints(maxWidth: 1200),
+              child: Column(
+                children: [
+                  // Header Section
+                  _buildHeaderSection(isDesktop, primaryColor),
+
+                  const SizedBox(height: 40),
+
+                  // Services Section
+                  _buildSectionTitle("Our Services", context, primaryColor),
+                  const SizedBox(height: 40),
+
+                  // Website Development Service
+                  _buildServiceSection(
+                    context,
+                    title: "Website Development",
+                    items: [
+                      "Personal/Portfolio Websites",
+                      "Institutional Websites",
+                      "Business Websites",
+                      "Digital Invitations",
+                    ],
+                    imagePath: 'assets/images/web_dev.jpeg',
+                    isDesktop: isDesktop,
+                    primaryColor: primaryColor,
                   ),
-                  child: Padding(
-                    padding: EdgeInsets.all(isDesktop ? 32.0 : 20.0),
-                    child:
-                        isDesktop
-                            ? _buildDesktopLayout()
-                            : _buildMobileLayout(),
+
+                  const SizedBox(height: 40),
+
+                  // Graphic Design Service
+                  _buildServiceSection(
+                    context,
+                    title: "Graphic Design",
+                    items: [
+                      "Logo Design",
+                      "Vector Illustrations",
+                      "Banners (Digital & Print)",
+                      "Poster Design",
+                      "CV Design",
+                    ],
+                    imagePath: 'assets/images/graphic_design.jpeg',
+                    isDesktop: isDesktop,
+                    primaryColor: primaryColor,
                   ),
-                ),
 
-                const SizedBox(height: 40),
+                  const SizedBox(height: 40),
 
-                // YouTube Video Section
-                _buildVideoSection(isDesktop),
-              ],
+                  // Digital Animation Service
+                  _buildServiceSection(
+                    context,
+                    title: "Digital Animation",
+                    items: [
+                      "2D & 3D Animation",
+                      "Educational Animation",
+                      "Product Explainer Videos",
+                    ],
+                    imagePath: 'assets/images/animation.jpeg',
+                    isDesktop: isDesktop,
+                    primaryColor: primaryColor,
+                  ),
+                ],
+              ),
             ),
           ),
         ),
@@ -75,140 +88,82 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  Widget _buildVideoSection(bool isDesktop) {
+  Widget _buildHeaderSection(bool isDesktop, Color primaryColor) {
     return Card(
       elevation: 0,
-      color: Colors.grey[50],
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+      color: Colors.white,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       child: Padding(
         padding: EdgeInsets.all(isDesktop ? 32.0 : 20.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              'Cara Kerja Komputer',
-              style: TextStyle(
-                fontSize: isDesktop ? 28 : 22,
-                fontWeight: FontWeight.bold,
-                color: Colors.blue[800],
-              ),
-            ),
-            const SizedBox(height: 16),
-            Container(
-              height: 4,
-              width: 80,
-              color: Colors.blue[800],
-              margin: const EdgeInsets.only(bottom: 20),
-            ),
-
-            // YouTube Player
-            Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(12),
-                color: Colors.grey[200],
-              ),
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(12),
-                child: AspectRatio(
-                  aspectRatio: 16 / 9,
-                  child: YoutubePlayerScaffold(
-                    controller: _controller,
-                    aspectRatio: 16 / 9,
-                    builder: (context, player) {
-                      return player;
-                    },
-                  ),
+        child:
+            isDesktop
+                ? Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Expanded(child: _buildHeaderContent(primaryColor)),
+                    const SizedBox(width: 40),
+                    _buildHeaderImage(),
+                  ],
+                )
+                : Column(
+                  children: [
+                    _buildHeaderImage(mobile: true),
+                    const SizedBox(height: 20),
+                    _buildHeaderContent(primaryColor),
+                  ],
                 ),
-              ),
-            ),
-          ],
-        ),
       ),
     );
   }
 
-  Widget _buildDesktopLayout() {
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        Expanded(
-          child: Padding(
-            padding: const EdgeInsets.only(right: 40),
-            child: _buildContentSection(centerText: false),
-          ),
-        ),
-        _buildImageSection(),
-      ],
-    );
-  }
-
-  Widget _buildMobileLayout() {
+  Widget _buildHeaderContent(Color primaryColor) {
     return Column(
-      children: [
-        _buildImageSection(mobile: true),
-        const SizedBox(height: 32),
-        _buildContentSection(centerText: true),
-      ],
-    );
-  }
-
-  Widget _buildContentSection({required bool centerText}) {
-    return Column(
-      crossAxisAlignment:
-          centerText ? CrossAxisAlignment.center : CrossAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
           'Digtren',
-          textAlign: centerText ? TextAlign.center : TextAlign.left,
           style: TextStyle(
-            fontSize: 28,
-            fontWeight: FontWeight.bold,
-            color: Colors.blue[800],
-            height: 1.3,
+            fontSize: 42,
+            fontWeight: FontWeight.w700,
+            color: primaryColor,
+            height: 1.2,
           ),
         ),
         const SizedBox(height: 16),
-        if (!centerText)
-          Container(
-            height: 4,
-            width: 80,
-            color: Colors.blue[800],
-            margin: const EdgeInsets.only(bottom: 20),
-          ),
+        Container(
+          height: 3,
+          width: 80,
+          color: primaryColor,
+          margin: const EdgeInsets.only(bottom: 24),
+        ),
         Text(
-          'Platform kolaboratif bagi para developer pesantren di Indonesia untuk saling terhubung, berdiskusi, dan membangun proyek open-source bersama.',
-          textAlign: centerText ? TextAlign.center : TextAlign.left,
+          'Professional digital solutions for your business needs. We specialize in creating beautiful, functional digital products.',
           style: TextStyle(fontSize: 16, color: Colors.grey[700], height: 1.6),
         ),
       ],
     );
   }
 
-  Widget _buildImageSection({bool mobile = false}) {
+  Widget _buildHeaderImage({bool mobile = false}) {
     return Container(
       constraints: BoxConstraints(
         maxWidth: mobile ? double.infinity : 500,
         maxHeight: mobile ? 220 : 350,
       ),
+
       child: ClipRRect(
         borderRadius: BorderRadius.circular(12),
         child: Image.asset(
-          'assets/images/1.jpeg',
+          'assets/images/header_image.jpeg',
           fit: BoxFit.cover,
           errorBuilder:
               (context, error, stackTrace) => Container(
-                color: Colors.grey[200],
+                color: Colors.grey[100],
                 child: Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      const Icon(Icons.image, size: 50, color: Colors.grey),
-                      const SizedBox(height: 8),
-                      Text(
-                        'Gambar Tidak Tersedia',
-                        style: TextStyle(color: Colors.grey[600]),
-                      ),
-                    ],
+                  child: Icon(
+                    Icons.photo_camera,
+                    size: 50,
+                    color: Colors.grey[400],
                   ),
                 ),
               ),
@@ -217,9 +172,145 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  @override
-  void dispose() {
-    _controller.close();
-    super.dispose();
+  Widget _buildSectionTitle(
+    String title,
+    BuildContext context,
+    Color primaryColor,
+  ) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 24),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            title,
+            style: TextStyle(
+              fontSize: 28,
+              fontWeight: FontWeight.w700,
+              color: Colors.grey[900],
+            ),
+          ),
+          const SizedBox(height: 8),
+          Container(height: 3, width: 60, color: primaryColor),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildServiceSection(
+    BuildContext context, {
+    required String title,
+    required List<String> items,
+    required String imagePath,
+    required bool isDesktop,
+    required Color primaryColor,
+  }) {
+    return Card(
+      elevation: 0,
+      margin: const EdgeInsets.only(bottom: 32),
+      color: Colors.white,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+      child: Padding(
+        padding: EdgeInsets.all(isDesktop ? 32.0 : 20.0),
+        child:
+            isDesktop
+                ? Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Expanded(
+                      child: Padding(
+                        padding: const EdgeInsets.only(right: 40),
+                        child: _buildServiceContent(title, items, primaryColor),
+                      ),
+                    ),
+                    _buildServiceImage(imagePath),
+                  ],
+                )
+                : Column(
+                  children: [
+                    _buildServiceImage(imagePath, mobile: true),
+                    const SizedBox(height: 24),
+                    _buildServiceContent(title, items, primaryColor),
+                  ],
+                ),
+      ),
+    );
+  }
+
+  Widget _buildServiceContent(
+    String title,
+    List<String> items,
+    Color primaryColor,
+  ) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          title,
+          style: TextStyle(
+            fontSize: 22,
+            fontWeight: FontWeight.w600,
+            color: Colors.grey[900],
+          ),
+        ),
+        const SizedBox(height: 16),
+        Container(
+          height: 2,
+          width: 60,
+          color: primaryColor,
+          margin: const EdgeInsets.only(bottom: 20),
+        ),
+        ...items.map(
+          (item) => Padding(
+            padding: const EdgeInsets.only(bottom: 12),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Icon(Icons.circle, size: 8, color: primaryColor),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: Text(
+                    item,
+                    style: TextStyle(
+                      fontSize: 16,
+                      height: 1.5,
+                      color: Colors.grey[700],
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildServiceImage(String imagePath, {bool mobile = false}) {
+    return Container(
+      constraints: BoxConstraints(
+        maxWidth: mobile ? double.infinity : 400,
+        maxHeight: mobile ? 200 : 280,
+      ),
+      decoration: BoxDecoration(borderRadius: BorderRadius.circular(8)),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(8),
+        child: Image.asset(
+          imagePath,
+          fit: BoxFit.cover,
+          errorBuilder:
+              (context, error, stackTrace) => Container(
+                color: Colors.grey[100],
+                child: Center(
+                  child: Icon(
+                    Icons.photo_camera,
+                    size: 40,
+                    color: Colors.grey[400],
+                  ),
+                ),
+              ),
+        ),
+      ),
+    );
   }
 }
