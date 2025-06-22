@@ -13,11 +13,11 @@ class ProductScreen extends StatefulWidget {
 class _ProductScreenState extends State<ProductScreen> {
   final PageController _pageController = PageController();
   final List<String> _appScreenshots = [
-    'assets/product/2.webp',
-    'assets/product/poster.webp',
-    'assets/product/1.webp',
-    'assets/product/3.webp',
     'assets/product/admin.webp',
+    'assets/product/1.webp',
+    'assets/product/2.webp',
+    'assets/product/3.webp',
+    'assets/product/poster.webp',
   ];
 
   // Consistent color scheme
@@ -213,23 +213,11 @@ class _ProductScreenState extends State<ProductScreen> {
           padding: const EdgeInsets.only(right: 32),
           child: Column(
             children: [
-              // App Logo
-              Container(
-                width: 160,
-                height: 160,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(16),
-                  color: Colors.white,
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withAlpha(10),
-                      blurRadius: 8,
-                      offset: const Offset(0, 3),
-                    ),
-                  ],
-                ),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(16),
+              // App Logo - Changed to CircleAvatar
+              CircleAvatar(
+                radius: 80,
+                backgroundColor: Colors.transparent,
+                child: ClipOval(
                   child: Image.asset(
                     'assets/product/logo.png',
                     fit: BoxFit.contain,
@@ -260,7 +248,7 @@ class _ProductScreenState extends State<ProductScreen> {
               ),
               const SizedBox(height: 24),
 
-              // Download Button
+              // Download Button - Simplified
               _buildDownloadButton(),
               const SizedBox(height: 24),
 
@@ -288,23 +276,11 @@ class _ProductScreenState extends State<ProductScreen> {
   Widget _buildMobileLayout() {
     return Column(
       children: [
-        // App Logo
-        Container(
-          width: 120,
-          height: 120,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(16),
-            color: Colors.white,
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withAlpha(10),
-                blurRadius: 8,
-                offset: const Offset(0, 3),
-              ),
-            ],
-          ),
-          child: ClipRRect(
-            borderRadius: BorderRadius.circular(16),
+        // App Logo - Changed to CircleAvatar
+        CircleAvatar(
+          radius: 60,
+          backgroundColor: Colors.transparent,
+          child: ClipOval(
             child: Image.asset(
               'assets/product/logo.png',
               fit: BoxFit.contain,
@@ -342,7 +318,7 @@ class _ProductScreenState extends State<ProductScreen> {
         _buildScreenshotsSection(true),
         const SizedBox(height: 24),
 
-        // Download Button
+        // Download Button - Simplified
         _buildDownloadButton(),
       ],
     );
@@ -446,18 +422,20 @@ class _ProductScreenState extends State<ProductScreen> {
   Widget _buildDownloadButton() {
     return SizedBox(
       width: double.infinity,
-      child: ElevatedButton(
+      child: ElevatedButton.icon(
         onPressed: _launchDownload,
         style: ElevatedButton.styleFrom(
           backgroundColor: primaryColor,
           foregroundColor: Colors.white,
-          padding: const EdgeInsets.symmetric(vertical: 16),
+          padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
           elevation: 0,
+          shadowColor: Colors.transparent,
         ),
-        child: const Text(
-          'UNDUH APLIKASI',
-          style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+        icon: const Icon(Icons.download, size: 20),
+        label: const Text(
+          'UNDUH',
+          style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
         ),
       ),
     );

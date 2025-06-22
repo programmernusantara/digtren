@@ -47,12 +47,6 @@ class DesktopNavbar extends StatelessWidget {
                   ),
                   const SizedBox(width: 32),
                   NavItem(
-                    icon: Icons.mail_outline,
-                    text: 'Contact',
-                    onPressed: () => onItemSelected(3),
-                  ),
-                  const SizedBox(width: 32),
-                  NavItem(
                     icon: Icons.language,
                     text: 'course',
                     onPressed: () async {
@@ -66,6 +60,12 @@ class DesktopNavbar extends StatelessWidget {
                         );
                       }
                     },
+                  ),
+                  const SizedBox(width: 32),
+                  NavItem(
+                    icon: Icons.mail_outline,
+                    text: 'Contact',
+                    onPressed: () => onItemSelected(3),
                   ),
                 ],
               ),
