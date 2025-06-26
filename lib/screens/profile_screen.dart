@@ -139,7 +139,7 @@ class TeamProfileScreen extends StatelessWidget {
           children: [
             Expanded(
               child: _buildTeamMemberCard(
-                name: "Putra Abdillah",
+                name: "Fahrur Rozi",
                 role: "IT Support",
                 photoAsset: "assets/putra.jpg",
                 responsibilities: [
@@ -245,7 +245,7 @@ class TeamProfileScreen extends StatelessWidget {
         ),
         const SizedBox(height: 20),
         _buildTeamMemberCard(
-          name: "Putra Abdillah",
+          name: "Fahrur Rozi",
           role: "IT Support",
           photoAsset: "assets/putra.jpg",
           responsibilities: [

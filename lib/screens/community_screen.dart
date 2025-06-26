@@ -159,7 +159,7 @@ class _CommunityScreenState extends State<CommunityScreen> {
       child: ClipRRect(
         borderRadius: BorderRadius.circular(12),
         child: Image.asset(
-          'assets/images/3.jpeg',
+          'assets/images/comunity.jpeg',
           fit: BoxFit.cover,
           errorBuilder: (context, error, stackTrace) => _buildImageError(),
         ),
