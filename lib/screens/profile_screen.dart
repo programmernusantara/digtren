@@ -9,7 +9,7 @@ class TeamProfileScreen extends StatelessWidget {
   static const Color textPrimary = Color(0xFF333333);
   static const Color textSecondary = Color(0xFF666666);
   static const double desktopMaxWidth = 1200.0;
-  static const double cardBorderRadius = 16.0;
+  static const double cardBorderRadius = 12.0; // Reduced border radius
   static const double sectionSpacing = 40.0;
   static const double desktopPadding = 40.0;
   static const double mobilePadding = 20.0;
@@ -260,13 +260,7 @@ class TeamProfileScreen extends StatelessWidget {
       decoration: BoxDecoration(
         color: secondaryColor,
         borderRadius: BorderRadius.circular(cardBorderRadius),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withAlpha(50),
-            blurRadius: 10.0,
-            offset: const Offset(0.0, 4.0),
-          ),
-        ],
+        // Removed shadow as requested
       ),
       padding: EdgeInsets.all(cardPadding),
       child: Column(
@@ -289,7 +283,7 @@ class TeamProfileScreen extends StatelessWidget {
                   ),
                   border: Border.all(
                     color: primaryColor.withAlpha(50),
-                    width: 2.0,
+                    width: 1.0, // Reduced border width
                   ),
                 ),
               ),
@@ -339,7 +333,11 @@ class TeamProfileScreen extends StatelessWidget {
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Icon(Icons.circle, size: 8.0, color: primaryColor),
+                  Icon(
+                    Icons.circle,
+                    size: 6.0,
+                    color: primaryColor,
+                  ), // Smaller bullet point
                   const SizedBox(width: 8.0),
                   Expanded(
                     child: Text(
@@ -380,10 +378,15 @@ class TeamProfileScreen extends StatelessWidget {
                             vertical: isMobile ? 5.0 : 6.0,
                           ),
                           decoration: BoxDecoration(
-                            color: primaryColor.withAlpha(50),
-                            borderRadius: BorderRadius.circular(8.0),
+                            color: primaryColor.withAlpha(
+                              20,
+                            ), // Lighter background
+                            borderRadius: BorderRadius.circular(
+                              6.0,
+                            ), // Smaller radius
                             border: Border.all(
                               color: primaryColor.withAlpha(50),
+                              width: 0.5, // Thinner border
                             ),
                           ),
                           child: Text(
