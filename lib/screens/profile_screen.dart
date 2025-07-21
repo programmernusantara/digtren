@@ -74,7 +74,7 @@ class ResponsiveTeamProfile extends StatelessWidget {
     return Column(
       children: [
         Text(
-          'Tim Inti DigTren',
+          'Tim DigTren',
           style: TextStyle(
             fontSize: 24,
             fontWeight: FontWeight.w800,
