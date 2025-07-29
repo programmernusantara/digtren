@@ -97,7 +97,7 @@ class ResponsiveTeamProfile extends StatelessWidget {
   List<Widget> _buildTeamCards({required bool isMobile}) {
     return [
       _buildTeamCard(
-        name: "M. Kholili",
+        name: "Devisi Kosong",
         role: "Chief Executive Officer",
         responsibilities: [
           "Menentukan arah, visi, dan strategi utama DigTren",
@@ -117,7 +117,7 @@ class ResponsiveTeamProfile extends StatelessWidget {
         isMobile: isMobile,
       ),
       _buildTeamCard(
-        name: "Yazid & Atha",
+        name: "Devisi Kosong",
         role: "UI/UX Designer",
         responsibilities: [
           "Merancang antarmuka pengguna yang menarik dan intuitif",
@@ -142,7 +142,7 @@ class ResponsiveTeamProfile extends StatelessWidget {
         isMobile: isMobile,
       ),
       _buildTeamCard(
-        name: "Fahrur Rozi",
+        name: "Devisi Kosong",
         role: "Backend Developer",
         responsibilities: [
           "Mengembangkan dan mengelola API serta infrastruktur",
@@ -152,7 +152,7 @@ class ResponsiveTeamProfile extends StatelessWidget {
         isMobile: isMobile,
       ),
       _buildTeamCard(
-        name: "Dafa & Farhan",
+        name: "Farhan",
         role: "Admin Operasional",
         responsibilities: [
           "Mendukung kelancaran operasional tim",
